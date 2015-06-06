@@ -12,17 +12,17 @@ class GroupsControllerTest < ActionController::TestCase
   end
 
   test "should get update" do
-    get :update
+    get :update, id: 1
     assert_response :success
   end
 
   test "should get edit" do
-    get :edit
+    get :edit, id: 2
     assert_response :success
   end
 
   test "should get destroy" do
-    get :destroy
+    get :destroy, id: 3
     assert_response :success
   end
 
@@ -32,7 +32,7 @@ class GroupsControllerTest < ActionController::TestCase
   end
 
   test "should get show" do
-    get :show
+    get :show, id: 1
     assert_response :success
   end
 
