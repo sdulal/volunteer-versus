@@ -1,2 +1,7 @@
-<h1>Groups#index</h1>
-<p>Find me in app/views/groups/index.html.erb</p>
+<h1>Groups</h1>
+
+<ul>
+  <%= render @groups %>
+</ul>
+
+<%= link_to "Create a new group", new_group_path %>
