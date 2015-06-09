@@ -4,11 +4,12 @@ class GroupsControllerTest < ActionController::TestCase
 
   def setup
     @group = groups(:key)
+    @admin = users(:nick)
+    @non_admin = users(:chris)
   end
 
   test "should get new when logged in" do
-    @user = users(:nick)
-    log_in_as(@user)
+    log_in_as(@admin)
     get :new
     assert_response :success
   end
@@ -36,9 +37,8 @@ class GroupsControllerTest < ActionController::TestCase
   end
 
   test "should redirect edit when logged in as non-admin" do
-    @user = users(:chris)
-    log_in_as(@user)
-    @user.join(@group)
+    log_in_as(@non_admin)
+    @non_admin.join(@group)
     get :edit, id: @group.id
     assert_redirected_to group_url
   end
@@ -50,17 +50,15 @@ class GroupsControllerTest < ActionController::TestCase
   end
 
   test "should redirect update when logged in as non-admin" do
-    @user = users(:chris)
-    log_in_as(@user)
-    @user.join(@group)
+    log_in_as(@non_admin)
+    @non_admin.join(@group)
     patch :update, id: @group.id, group: { name: "Bad", description: "Stuff" }
     assert_redirected_to group_url
     assert_not @group.changed?
   end
 
   test "should patch update when logged in as admin" do
-    @user = users(:nick)
-    log_in_as(@user)
+    log_in_as(@admin)
     patch :update, id: @group.id, group: { name: "Key", description: "Key to Success" }
     assert_redirected_to group_url
     @group.reload
@@ -68,8 +66,7 @@ class GroupsControllerTest < ActionController::TestCase
   end
 
   test "should get edit when logged in as admin" do
-    @user = users(:nick)
-    log_in_as(@user)
+    log_in_as(@admin)
     get :edit, id: @group.id
     assert_response :success
   end
@@ -80,8 +77,7 @@ class GroupsControllerTest < ActionController::TestCase
   end
 
   test "should get show when logged in" do
-    @user = users(:nick)
-    log_in_as(@user)
+    log_in_as(@admin)
     get :show, id: @group.id
     assert_response :success
   end
@@ -93,17 +89,15 @@ class GroupsControllerTest < ActionController::TestCase
   end
 
   test "should redirect destroy when logged in as non-admin" do
-    @user = users(:chris)
-    log_in_as(@user)
-    @user.join(@group)
+    log_in_as(@non_admin)
+    @non_admin.join(@group)
     get :destroy, id: @group.id
     assert_redirected_to group_url
     assert Group.exists?(@group.id)
   end
 
   test "should destroy when logged in as admin" do
-    @user = users(:nick)
-    log_in_as(@user)
+    log_in_as(@admin)
     get :destroy, id: @group.id
     assert_redirected_to groups_url
     assert_not Group.exists?(@group.id)
