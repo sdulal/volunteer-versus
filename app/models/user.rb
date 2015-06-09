@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
 has_many :memberships, dependent: :destroy
 has_many :groups, through: :memberships
+has_many :admin_groups, class_name: "Membership", foreign_key: "user_id", dependent: :destroy
 attr_accessor :remember_token, :activation_token, :reset_token
 before_save :downcase_email
 before_create :create_activation_digest
@@ -70,6 +71,17 @@ validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
   def password_reset_expired?
     reset_sent_at < 2.hours.ago
   end
+
+  # Joins a group.
+  def join(group)
+    memberships.create(group: group)
+  end
+
+  # Quits a group.
+  def quit(group)
+    memberships.find_by(group: group).destroy
+  end
+
 
   private
 

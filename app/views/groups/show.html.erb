@@ -1,3 +1,13 @@
 <h1><%= @group.name %></h1>
 
 <p><%= @group.description %></p>
+
+<% if @group.has_member?(current_user) %>
+  You are a member of this group!
+  <%= render 'quit' %>
+<% else %>
+  Join!
+  <%= render 'join' %>
+<% end %>
+
+<!-- All the events will be here! -->

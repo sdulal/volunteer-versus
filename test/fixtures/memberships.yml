@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: nick
+  group: key
+  admin: true
+
+two:
+  user: chris
+  group: circle
+  admin: false

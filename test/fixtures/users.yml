@@ -4,9 +4,9 @@ nick:
   name: Nick Du
   email: nick@example.com
   password_digest: <%= User.digest('password') %>
-  admin: true
   activated: true
   activated_at: <%= Time.zone.now %>
+  admin: true
 
 beast:
   name: The Beast
