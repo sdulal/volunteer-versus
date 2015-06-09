@@ -52,13 +52,9 @@ class UsersController < ApplicationController
                                     :password_confirmation)
     end
 
-    def by_id
-      params[:id]
-    end
-
     # Confirms the correct user
     def correct_user
-      @user = User.find(params[:id])
+      @user = User.find(by_id)
       redirect_to(root_url) unless current_user?(@user)
     end
 

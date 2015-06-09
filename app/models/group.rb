@@ -10,4 +10,16 @@ class Group < ActiveRecord::Base
   def admins
     memberships.where(group: self, admin: true)
   end
+
+  def has_admin?(user)
+    memberships.exists?(user: user, admin: true)
+  end
+
+  def promote_to_admin(user)
+    if has_member?(user)
+      member = memberships.where(user: user).first
+      member.admin = true
+      member.save
+    end
+  end
 end

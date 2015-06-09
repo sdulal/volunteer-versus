@@ -1,24 +1,26 @@
 require 'test_helper'
 
 class GroupsControllerTest < ActionController::TestCase
-  test "should get new" do
+
+  def setup
+    @group = groups(:key)
+  end
+
+  test "should get new when logged in" do
+    @user = users(:nick)
+    log_in_as(@user)
     get :new
     assert_response :success
   end
 
-  test "should get update" do
-    get :update, id: 1
-    assert_response :success
+  test "should redirect new when not logged in" do
+    get :new
+    assert_redirected_to login_url
   end
 
-  test "should get edit" do
-    get :edit, id: 2
-    assert_response :success
-  end
-
-  test "should get index" do
+  test "should redirect index when not logged in" do
     get :index
-    assert_response :success
+    assert_redirected_to login_url
   end
 
   test "should redirect create when not logged in" do
@@ -28,9 +30,82 @@ class GroupsControllerTest < ActionController::TestCase
     assert_redirected_to login_url
   end
 
-  # test "should get show" do
-  #   get :show, id: 1
-  #   assert_response :success
-  # end
+  test "should redirect edit when not logged in" do
+    get :edit, id: @group.id
+    assert_redirected_to login_url
+  end
 
+  test "should redirect edit when logged in as non-admin" do
+    @user = users(:chris)
+    log_in_as(@user)
+    @user.join(@group)
+    get :edit, id: @group.id
+    assert_redirected_to group_url
+  end
+
+  test "should redirect update when not logged in" do
+    patch :update, id: @group.id, group: { name: "Bad", description: "Stuff" }
+    assert_redirected_to login_url
+    assert_not @group.changed?
+  end
+
+  test "should redirect update when logged in as non-admin" do
+    @user = users(:chris)
+    log_in_as(@user)
+    @user.join(@group)
+    patch :update, id: @group.id, group: { name: "Bad", description: "Stuff" }
+    assert_redirected_to group_url
+    assert_not @group.changed?
+  end
+
+  test "should patch update when logged in as admin" do
+    @user = users(:nick)
+    log_in_as(@user)
+    patch :update, id: @group.id, group: { name: "Key", description: "Key to Success" }
+    assert_redirected_to group_url
+    @group.reload
+    assert_equal "Key to Success", @group.description
+  end
+
+  test "should get edit when logged in as admin" do
+    @user = users(:nick)
+    log_in_as(@user)
+    get :edit, id: @group.id
+    assert_response :success
+  end
+
+  test "should redirect show when not logged in" do
+    get :show, id: @group.id
+    assert_redirected_to login_url
+  end
+
+  test "should get show when logged in" do
+    @user = users(:nick)
+    log_in_as(@user)
+    get :show, id: @group.id
+    assert_response :success
+  end
+
+  test "should redirect destroy when not logged in" do
+    get :destroy, id: @group.id
+    assert_redirected_to login_url
+    assert Group.exists?(@group.id)
+  end
+
+  test "should redirect destroy when logged in as non-admin" do
+    @user = users(:chris)
+    log_in_as(@user)
+    @user.join(@group)
+    get :destroy, id: @group.id
+    assert_redirected_to group_url
+    assert Group.exists?(@group.id)
+  end
+
+  test "should destroy when logged in as admin" do
+    @user = users(:nick)
+    log_in_as(@user)
+    get :destroy, id: @group.id
+    assert_redirected_to groups_url
+    assert_not Group.exists?(@group.id)
+  end
 end

@@ -1,2 +1,13 @@
-<h1>Groups#edit</h1>
-<p>Find me in app/views/groups/edit.html.erb</p>
+<h1>Editing <%= @group.name %></h1>
+
+<%= form_for(@group) do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+
+  <%= f.label :description %>
+  <%= f.text_area :description %>
+
+  <%= f.submit "Save changes" %>
+<% end %>
