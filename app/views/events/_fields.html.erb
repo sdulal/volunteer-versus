@@ -1,0 +1,21 @@
+<%= render 'shared/error_messages', object: f.object %>
+
+<%= f.label :name %>
+<%= f.text_field :name %>
+
+<!-- TODO: Bring in a date/time picker for easy input. -->
+
+<%= f.label :date %>
+<%= f.date_field :date %>
+
+<%= f.label :start_time %>
+<%= f.time_field :start_time %>
+
+<%= f.label :end_time %>
+<%= f.time_field :end_time %>
+
+<%= f.label :location %>
+<%= f.text_field :location %>
+
+<%= f.label :description %>
+<%= f.text_area :description %>

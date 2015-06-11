@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class MembershipTest < ActionDispatch::IntegrationTest
+class MembershipsInterfaceTest < ActionDispatch::IntegrationTest
   # Goals:
   # Test the user's groups page*
   # Test user's ability to join a group (ajax method planned)

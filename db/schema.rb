@@ -11,7 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150608225121) do
+ActiveRecord::Schema.define(version: 20150610001104) do
+
+  create_table "events", force: :cascade do |t|
+    t.string   "name"
+    t.date     "date"
+    t.time     "start_time"
+    t.time     "end_time"
+    t.string   "location"
+    t.text     "description"
+    t.integer  "group_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "events", ["group_id", "created_at"], name: "index_events_on_group_id_and_created_at"
+  add_index "events", ["group_id"], name: "index_events_on_group_id"
 
   create_table "groups", force: :cascade do |t|
     t.string   "name"
@@ -29,6 +44,7 @@ ActiveRecord::Schema.define(version: 20150608225121) do
   end
 
   add_index "memberships", ["group_id"], name: "index_memberships_on_group_id"
+  add_index "memberships", ["user_id", "group_id"], name: "index_memberships_on_user_id_and_group_id", unique: true
   add_index "memberships", ["user_id"], name: "index_memberships_on_user_id"
 
   create_table "users", force: :cascade do |t|

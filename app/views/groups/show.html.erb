@@ -10,4 +10,7 @@
   <%= render 'join' %>
 <% end %>
 
+<% if @group.has_admin?(current_user) %>
+  <%= link_to 'Create_event', new_event_path(@group) %>
+<% end %>
 <!-- All the events will be here! -->
