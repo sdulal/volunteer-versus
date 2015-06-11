@@ -52,4 +52,22 @@ class EventsControllerTest < ActionController::TestCase
     end
     assert_redirected_to @group
   end
+
+  test "should redirect everything if not logged in" do
+    get :index, id: @group.id
+    assert_redirected_to login_url
+    get :new, id: @group.id
+    assert_redirected_to login_url
+    post :create, id: @group.id
+    assert_redirected_to login_url
+    get :edit, id: @group.id
+    assert_redirected_to login_url
+    patch :update, id: @group.id
+    assert_redirected_to login_url
+    get :show, id: @group.id
+    assert_redirected_to login_url
+    delete :destroy, id: @group.id
+    assert_redirected_to login_url
+  end
+
 end
