@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+nick_key:
+  attendee: nick
+  event: keynect
+  checked: false
+
+chris_kitchen:
+  attendee: chris
+  event: kitchen
+  checked: false

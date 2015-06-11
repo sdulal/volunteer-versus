@@ -16,7 +16,7 @@ kitchen:
   end_time: 2015-06-10 17:05:00
   location: West SJ
   description: Kitchen duties.
-  group_id: 2
+  group: circle
 
 keynect:
   name: KeyNection
