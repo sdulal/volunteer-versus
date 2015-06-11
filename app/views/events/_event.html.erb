@@ -1,4 +1,4 @@
-<%= event.name %>
+<%= link_to event.name, event_path(event) %>
 <br>
 <%= event.date.to_formatted_s(:long) %>
 <br>

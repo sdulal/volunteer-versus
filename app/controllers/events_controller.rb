@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
   before_action :logged_in_user
-  before_action :admin_user, only: [:create, :edit, :update, :destroy]
+  before_action :admin_user, only: [:new, :create, :edit, :update, :destroy]
 
   def index
     @group = Group.find(by_id)
