@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
 has_many :memberships, dependent: :destroy
 has_many :groups, through: :memberships
 # TODO: Give a proper way to specify admin groups.
-has_many :attendances
+has_many :attendances, foreign_key: "attendee_id", dependent: :destroy
 has_many :events, through: :attendances
 attr_accessor :remember_token, :activation_token, :reset_token
 before_save :downcase_email
@@ -81,6 +81,11 @@ validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
   # Quits a group.
   def quit(group)
     memberships.find_by(group: group).destroy
+  end
+
+  # Attends an event.
+  def attend(event)
+    attendances.create(event: event)
   end
 
   private

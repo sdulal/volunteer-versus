@@ -8,9 +8,12 @@ Rails.application.routes.draw do
   resources :users
   resources :account_activations, only: [:edit]
   resources :password_resets, only: [:new, :create, :edit, :update]
-  resources :groups do
-    member do
-      resources :events
+
+  # inner hierarchy gets only: [:index, :new, :create]
+  # only: [:show, :edit, :update, :destroy] gets flatted to be outside.
+  resources :groups, shallow: true do
+    resources :events do
+      resources :attendances, except: :show
     end
   end
   resources :memberships, only: [:create, :destroy]

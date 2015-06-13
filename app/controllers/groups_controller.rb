@@ -7,9 +7,10 @@ class GroupsController < ApplicationController
   end
 
   def create
-    @group = current_user.microposts.build(group_params)
+    @group = Group.new(group_params)
     if @group.save
       flash[:success] = "Group created!"
+      current_user.join(@group)
       @group.promote_to_admin(current_user)
       redirect_to group_url(@group)
     else

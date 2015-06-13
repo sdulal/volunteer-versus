@@ -1,3 +1,8 @@
-Hello, <%= @user.name %>!
+<%= provide(:title, @user.name) %>
 
-<%= link_to "Log out", logout_path %>
+<h1>
+  <%= gravatar_for @user %>
+  <%= @user.name %>
+</h1>
+
+<%= link_to "Log out", logout_path, method: "delete" %>

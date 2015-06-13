@@ -1,0 +1,8 @@
+<li>
+  <%= gravatar_for attendee, size: 50 %>
+  <%= link_to attendee.name, attendee %>
+  <% if current_user.admin? && !current_user?(attendee) %>
+<!--     | <%= link_to "Remove from event", attendee, method: :delete,
+                                  data: { confirm: "You sure?" } %> -->
+  <% end %>
+</li>

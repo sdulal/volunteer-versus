@@ -9,3 +9,8 @@ two:
   user: chris
   group: circle
   admin: false
+
+three:
+  user: stephen
+  group: key
+  admin: true

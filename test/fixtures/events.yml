@@ -26,3 +26,11 @@ keynect:
   location: East SJ
   description: Meetups and Helpouts!
   group: key
+
+future:
+  name: Futurism
+  date: <%= Date.today + 1 %>
+  start_time: 12:00:00
+  end_time: 14:00:00
+  description: An event that will happen soon..
+  group: key

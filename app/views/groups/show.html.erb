@@ -4,7 +4,7 @@
 
 <% if @group.has_member?(current_user) %>
   You are a member of this group!
-  <%= link_to "View events", events_path(@group) %>
+  <%= link_to "View events", group_events_path(@group) %>
   <%= render 'quit' %>
 <% else %>
   Join!
@@ -12,6 +12,6 @@
 <% end %>
 
 <% if @group.has_admin?(current_user) %>
-  <%= link_to 'Create event', new_event_path(@group) %>
+  <%= link_to 'Create event', new_group_event_path(@group) %>
 <% end %>
 <!-- All the events will be here! -->

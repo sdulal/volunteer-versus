@@ -3,13 +3,13 @@ class EventsController < ApplicationController
   before_action :admin_user, only: [:new, :create, :edit, :update, :destroy]
 
   def index
-    @group = Group.find(by_id)
+    @group = Group.find(params[:group_id])
     @events = @group.events.all
   end
 
   def new
     @event = Event.new
-    @event.group_id = Group.find(by_id)
+    @event.group_id = Group.find(params[:group_id])
   end
 
   def create
@@ -19,8 +19,13 @@ class EventsController < ApplicationController
       # The user should become a leader/owner of event.
       redirect_to @event
     else
-      redirect_to new_event_url
+      redirect_to new_group_event_url
     end
+  end
+
+  def show
+    @event = Event.find(by_id)
+    @attendees = @event.attendees
   end
 
   def edit
@@ -37,10 +42,6 @@ class EventsController < ApplicationController
     end
   end
 
-  def show
-    @event = Event.find(by_id)
-  end
-
   def destroy
     Event.find(by_id).destroy
     flash[:success] = "Event deleted."
@@ -55,7 +56,11 @@ class EventsController < ApplicationController
     end
 
     def admin_user
-      @group = Group.find(by_id)
+      if (params[:group_id])
+        @group = Group.find(params[:group_id])
+      else
+        @group = Event.find(by_id).group
+      end
       redirect_to @group unless @group.has_admin?(current_user)
     end
 end

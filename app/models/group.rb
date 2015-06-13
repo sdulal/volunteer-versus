@@ -2,6 +2,7 @@ class Group < ActiveRecord::Base
   has_many :memberships, dependent: :destroy
   has_many :users, through: :memberships
   has_many :events
+  # default_scope -> { order(name: :asc)}
   validates :name, presence: true, length: { maximum: 50 }
 
   def has_member?(user)

@@ -1,5 +1,7 @@
 class Event < ActiveRecord::Base
   belongs_to :group
+  has_many :attendances
+  has_many :attendees, through: :attendances
   default_scope -> { order(date: :desc) }
   validates :name, presence: true
   validates :date, presence: true
@@ -13,6 +15,10 @@ class Event < ActiveRecord::Base
 
   def hours
     (end_time - start_time) / 1.hours
+  end
+
+  def has_attendee?(attendee)
+    attendees.exists?(attendee)
   end
 
   private

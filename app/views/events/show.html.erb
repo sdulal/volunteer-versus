@@ -10,7 +10,18 @@
 <br>
 
 <%= @event.description %>
+<br>
+
+
+<h2>
+  Here are all the people going to the event!
+</h2>
+<%= render partial: 'attendances/attendee', collection: @attendees %>
+
+
 
 <% if @event.group.has_admin?(current_user) %>
   <%= link_to "Edit event", edit_event_path(@event) %>
 <% end %>
+
+<%= render 'attendances/attendance_actions' %>

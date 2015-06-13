@@ -9,3 +9,8 @@ chris_kitchen:
   attendee: chris
   event: kitchen
   checked: false
+
+will_attend:
+  attendee: nick
+  event: future
+  checked: false
