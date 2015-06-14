@@ -2,15 +2,6 @@ class AttendancesController < ApplicationController
   before_action :logged_in_user
   before_action :correct_user, only: :create
 
-  # View everyone attending the event
-  def index
-    
-  end
-
-  # Saying that one is going
-  def new
-  end
-
   # Carrying out above action
   def create
     @attendance = Attendance.new(attendee: current_user, event_id: params[:event_id])
@@ -35,6 +26,10 @@ class AttendancesController < ApplicationController
   end
 
   private
+
+    def attendance_params
+      params.require(:attendance).permit(:went, :left, :checked)
+    end
 
     # Tests that the current user is in the group of the event
     def correct_user

@@ -5,4 +5,6 @@
   <%= @user.name %>
 </h1>
 
+<p>You have volunteered for <%= number_to_human(@user.hours, precision: 2, strip_insignificant_zeros: true) %> hours.</p>
+
 <%= link_to "Log out", logout_path, method: "delete" %>

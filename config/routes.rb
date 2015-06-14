@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   # only: [:show, :edit, :update, :destroy] gets flatted to be outside.
   resources :groups, shallow: true do
     resources :events do
-      resources :attendances, except: :show
+      resources :attendances, except: [:index, :show, :new]
     end
   end
   resources :memberships, only: [:create, :destroy]

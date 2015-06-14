@@ -89,6 +89,10 @@ validates :hours, presence: true, numericality: { greater_than_or_equal_to: 0 }
     attendances.create(event: event)
   end
 
+  def admin_of?(group)
+    memberships.exists?(group_id: group.id, admin: true)
+  end
+
   private
 
     # Converts email to all lower-case.
