@@ -1,5 +1,6 @@
 class AttendancesController < ApplicationController
   before_action :logged_in_user
+  before_action :correct_user, only: :create
 
   # View everyone attending the event
   def index
@@ -32,5 +33,13 @@ class AttendancesController < ApplicationController
     flash[:success] = "Quit successfully!"
     redirect_to :back
   end
+
+  private
+
+    # Tests that the current user is in the group of the event
+    def correct_user
+      @group = Event.find(params[:event_id]).group
+      redirect_to @group unless @group.has_member?(current_user)
+    end
 
 end

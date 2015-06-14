@@ -14,6 +14,7 @@ validates :email, presence: true, length: { maximum: 255 },
                   uniqueness: { case_sensitive: false }
 has_secure_password
 validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
+validates :hours, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
 
   # Returns the hash digest of the given string.

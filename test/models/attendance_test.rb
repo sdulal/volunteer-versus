@@ -31,4 +31,13 @@ class AttendanceTest < ActiveSupport::TestCase
     assert @future.valid?
   end
 
+  test "checking when proper should change user's hours" do
+    @attendee = @attendance.attendee
+    @attendance.checked = true
+    @attendance.save
+    assert_equal 2, @attendee.hours
+    @attendance.checked = false
+    @attendance.save
+    assert_equal 0, @attendee.hours
+  end
 end

@@ -25,6 +25,16 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
   end
 
+  test "hours should be present" do
+    @user.hours = nil
+    assert_not @user.valid?
+  end
+
+  test "hours cannot be negative" do
+    @user.hours = -100
+    assert_not @user.valid?
+  end
+
   test "name should not be too long" do
     @user.name = "a" * 51
     assert_not @user.valid?

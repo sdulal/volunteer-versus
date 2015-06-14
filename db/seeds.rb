@@ -40,7 +40,7 @@ users = User.all
 groups = Group.all
 prev = 0
 groups.each do |group|
-  members = users[(prev + 1)...(group.id * 10)]
+  members = users[(prev)...(group.id * 10 - 1)]
   members.each do |member|
     member.join(group)
   end
@@ -73,8 +73,7 @@ groups = Group.all
 groups.each do |group|
   events = group.events
   events.each do |event|
-    num_attendees = rand(1..(group.users.count))
-    users = group.users.sample(num_attendees)
+    users = group.users.all
     users.each do |user|
       user.attend(event)
     end
