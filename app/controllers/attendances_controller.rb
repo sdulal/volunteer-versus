@@ -28,9 +28,10 @@ class AttendancesController < ApplicationController
     @attendance = Attendance.find(by_id)
     if @attendance.update_attributes(attendance_params)
       flash[:success] = "Updated attendance."
-      puts @attendance.attributes
+      redirect_to event_attendances_url(@attendance.event)
+    else
+      render 'edit'
     end
-    redirect_to :back
   end
 
   # Quit event.
