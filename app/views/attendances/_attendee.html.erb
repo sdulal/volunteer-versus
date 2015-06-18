@@ -2,7 +2,11 @@
   <%= gravatar_for attendee, size: 50 %>
   <%= link_to attendee.name, attendee %>
   <% if show_admin_tools %>
-    <%= link_to "Check off", attendance_path( attendee.attendance_for(@event), attendance: { checked: true }), method: :put %>
+    <% if attendee.got_checked_for?(@event) %>
+      <%= link_to "Uncheck off", attendance_path( attendee.attendance_for(@event), attendance: { checked: false }), method: :put %>
+    <% else %>
+      <%= link_to "Check off", attendance_path( attendee.attendance_for(@event), attendance: { checked: true }), method: :put %>
+    <% end %>
     <%= link_to "Advanced edit", edit_attendance_path(attendee.attendance_for(@event)) %>
   <% end %>
 </li>

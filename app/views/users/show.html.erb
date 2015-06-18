@@ -5,6 +5,18 @@
   <%= @user.name %>
 </h1>
 
-<p>You have volunteered for <%= number_to_human(@user.reload.hours, precision: 2, strip_insignificant_zeros: true) %> hours.</p>
+<section>
+  <li>Member of
+    <a href="<%= groups_user_path(@user) %>">
+      <%= pluralize(@user.groups.count, "group") %>
+    </a>
+  </li>
+  <li>Volunteered in
+    <a href="<%= events_user_path(@user) %>">
+      <%= @user.attendances.where(checked: true).count %> events
+    </a>
+  </li>
+  <li>Volunteered for <%= number_to_human(@user.reload.hours, precision: 2, strip_insignificant_zeros: true) %> hours.</li>
+</section>
 
 <%= link_to "Log out", logout_path, method: "delete" %>

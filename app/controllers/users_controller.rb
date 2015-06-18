@@ -46,6 +46,16 @@ class UsersController < ApplicationController
     redirect_to users_url
   end
 
+  def groups
+    @user = User.find(by_id)
+    @groups = @user.groups
+  end
+
+  def events
+    @user = User.find(by_id)
+    @events = @user.events
+  end
+
   private
 
     def user_params

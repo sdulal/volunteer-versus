@@ -2,6 +2,18 @@
 
 <p><%= @group.description %></p>
 
+<ul>
+  <li>On Volunteer Versus since <%= @group.created_at.to_s %></li>
+  <li>
+      <%= @group.users.count %> members
+    </a>
+  </li>
+  <li>
+      <%= @group.events.count %> events
+    </a>
+  </li>
+</ul>
+
 <% if @group.has_member?(current_user) %>
   You are a member of this group!
   <%= link_to "View events", group_events_path(@group) %>

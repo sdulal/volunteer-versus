@@ -99,6 +99,11 @@ validates :hours, presence: true, numericality: { greater_than_or_equal_to: 0 }
     attendances.where(event_id: event.id).first
   end
 
+  def got_checked_for?(event)
+    attendance = attendance_for(event)
+    attendance && attendance.checked?
+  end
+
   private
 
     # Converts email to all lower-case.
