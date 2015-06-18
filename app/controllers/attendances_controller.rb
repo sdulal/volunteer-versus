@@ -1,8 +1,16 @@
 class AttendancesController < ApplicationController
   before_action :logged_in_user
-  before_action :correct_user, only: :create
+  before_action :member_user
+  before_action :admin_user, only: [:edit, :update]
 
-  # Carrying out above action
+  # Showing all attendances for a particular event.
+  # It is intended that events can get checked off in this view.
+  def index
+    @event = Event.find(params[:event_id])
+    @attendees = @event.attendees
+  end
+
+  # Carrying out join event.
   def create
     @attendance = Attendance.new(attendee: current_user, event_id: params[:event_id])
     @attendance.save
@@ -12,17 +20,25 @@ class AttendancesController < ApplicationController
 
   # A tool that only group admins will use
   def edit
+    @attendance = Attendance.find(by_id)
   end
 
   # Saving above
   def update
+    @attendance = Attendance.find(by_id)
+    if @attendance.update_attributes(attendance_params)
+      flash[:success] = "Updated attendance."
+      puts @attendance.attributes
+    end
+    redirect_to :back
   end
 
-  # Quit event/admin deletes from event
+  # Quit event.
   def destroy
+    @event = Attendance.find(by_id).event
     Attendance.find(by_id).destroy
     flash[:success] = "Quit successfully!"
-    redirect_to :back
+    redirect_to @event
   end
 
   private
@@ -31,10 +47,20 @@ class AttendancesController < ApplicationController
       params.require(:attendance).permit(:went, :left, :checked)
     end
 
-    # Tests that the current user is in the group of the event
-    def correct_user
-      @group = Event.find(params[:event_id]).group
+    # Checks that the current user is in the group of the event
+    def member_user
+      if params[:event_id]   
+        @group = Event.find(params[:event_id]).group
+      else
+        @group = Attendance.find(params[:id]).group
+      end
       redirect_to @group unless @group.has_member?(current_user)
+    end
+
+    # Restricts certain actions only to admins of the related group
+    def admin_user
+      @attendance = Attendance.find(by_id)
+      redirect_to @attendance.event unless @attendance.group.has_admin?(current_user)
     end
 
 end

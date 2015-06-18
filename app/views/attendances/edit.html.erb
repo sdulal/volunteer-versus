@@ -1,0 +1,21 @@
+<% provide(:title, "Edit attendance") %>
+
+Editing <%= @attendance.attendee.name %>'s volunteer record for the event <%= @attendance.event.name %>
+<%= @attendance.event.name %> started at <%= @attendance.event.start_time.to_s %>
+and ended at <%= @attendance.event.end_time %>
+
+<%= form_for(@attendance) do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <%= f.label :went, "Start time" %>
+  <%= f.time_field :went %>
+
+  <%= f.label :left, "End time" %>
+  <%= f.time_field :left %>
+
+  <%= f.label :checked, "Attended event?"  do %>
+    <%= f.check_box :checked %>
+  <% end %>
+
+  <%= f.submit "Save changes" %>
+<% end %>

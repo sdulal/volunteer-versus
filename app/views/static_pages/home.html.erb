@@ -1,6 +1,5 @@
-<div>
-  <h1>Volunteer Versus</h1>
-  <h2>A competitive volunteering platform.</h2>
-
-  <%= link_to "Sign up!", signup_path %>
-</div>
+<% if logged_in? %>
+  <%= render 'logged_in_home' %>
+<% else %>
+  <%= render 'not_logged_in_home' %>
+<% end %>

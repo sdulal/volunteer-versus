@@ -3,6 +3,7 @@ class Attendance < ActiveRecord::Base
   before_save :credit_hours, if: "checked_changed?"
   belongs_to :attendee, class_name: "User"
   belongs_to :event
+  has_one :group, through: :event
   validates :attendee_id, presence: true
   validates :event_id, presence: true
   validate :check_after_event, if: "checked?"
@@ -14,10 +15,11 @@ class Attendance < ActiveRecord::Base
   private
 
     def credit_hours
+      old_hours = self.attendee.hours
       if checked?
-        self.attendee.hours += self.hours
+        attendee.update_attributes(hours: (old_hours + hours))
       else
-        self.attendee.hours -= self.hours
+        attendee.update_attributes(hours: (old_hours - hours))
       end
     end
 
@@ -29,7 +31,7 @@ class Attendance < ActiveRecord::Base
     def check_after_event
       unless (Date.today > event.date) || (Date.today == event.date && 
                                            Time.now.hour >= event.end_time.hour)
-        errors.add(:checked, "cannot be done until day of event")
+        errors.add(:checked, "cannot be done until after event has ended")
       end
     end
 end

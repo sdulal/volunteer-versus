@@ -1,9 +1,6 @@
 require 'test_helper'
 
 class MembershipsControllerTest < ActionController::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
   test "create should require logged-in user" do
     assert_no_difference 'Membership.count' do
       post :create

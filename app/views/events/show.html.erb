@@ -23,6 +23,7 @@
 <% if @event.group.has_admin?(current_user) %>
   <ul>
     <li><%= link_to "Edit event", edit_event_path(@event) %></li>
+    <li><%= link_to "Check attendances", event_attendances_path(@event) %></li>
   </ul>
 <% end %>
 

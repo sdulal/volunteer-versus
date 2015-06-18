@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   before_action :admin_user, only: :destroy
   
   def index
+    @users = User.order(hours: :desc)
   end
 
   def show

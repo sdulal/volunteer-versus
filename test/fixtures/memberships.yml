@@ -13,4 +13,4 @@ two:
 three:
   user: stephen
   group: key
-  admin: true
+  admin: false

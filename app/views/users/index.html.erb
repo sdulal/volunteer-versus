@@ -1,1 +1,11 @@
-All the users...
+<ol>
+  <% @users.each do |user| %>
+    <li>
+      <ul>
+        <li><%= user.name %></li>
+        <li><%= user.hours %> hours volunteered</li>
+        <li>Member of <%= user.memberships.count %> groups</li>
+      </ul>
+    </li>
+  <% end %>
+</ol>

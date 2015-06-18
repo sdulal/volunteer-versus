@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   root 'static_pages#home'
   get 'about' => 'static_pages#about'
+  get 'contact' => 'static_pages#contact'
   get 'signup' => 'users#new'
   get 'login' => 'sessions#new'
   post 'login' => 'sessions#create'
@@ -13,7 +14,7 @@ Rails.application.routes.draw do
   # only: [:show, :edit, :update, :destroy] gets flatted to be outside.
   resources :groups, shallow: true do
     resources :events do
-      resources :attendances, except: [:index, :show, :new]
+      resources :attendances, except: [:show, :new]
     end
   end
   resources :memberships, only: [:create, :destroy]
