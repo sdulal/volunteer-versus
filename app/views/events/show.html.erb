@@ -16,14 +16,16 @@
 <h2>
   Here are all the people going to the event!
 </h2>
-<%= render partial: 'attendances/attendee', collection: @attendees, locals: { group: @event.group } %>
+<%= render partial: 'attendances/attendee', collection: @attendees, locals: { group: @group, show_admin_tools: @show_admin_tools } %>
 
 
 
 <% if @event.group.has_admin?(current_user) %>
   <ul>
     <li><%= link_to "Edit event", edit_event_path(@event) %></li>
-    <li><%= link_to "Check attendances", event_attendances_path(@event) %></li>
+    <% if @event.ended? %>
+      <li><%= link_to "Check attendances", event_attendances_path(@event) %></li>
+    <% end %>
   </ul>
 <% end %>
 

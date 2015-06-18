@@ -21,6 +21,11 @@ class Event < ActiveRecord::Base
     attendees.exists?(attendee)
   end
 
+  def ended?
+    (Date.today > date) || (Date.today == date && 
+                            Time.now.hour >= end_time.hour)
+  end
+
   private
 
     # Validates that the event starts before it ends.

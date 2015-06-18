@@ -1,7 +1,7 @@
 <li>
   <%= gravatar_for attendee, size: 50 %>
   <%= link_to attendee.name, attendee %>
-  <% if current_user.admin_of?(group) %>
+  <% if show_admin_tools %>
     <%= link_to "Check off", attendance_path( attendee.attendance_for(@event), attendance: { checked: true }), method: :put %>
     <%= link_to "Advanced edit", edit_attendance_path(attendee.attendance_for(@event)) %>
   <% end %>

@@ -43,8 +43,7 @@ class Attendance < ActiveRecord::Base
     end
 
     def check_after_event
-      unless (Date.today > event.date) || (Date.today == event.date && 
-                                           Time.now.hour >= event.end_time.hour)
+      unless event.ended?
         errors.add(:checked, "cannot be done until after event has ended")
       end
     end

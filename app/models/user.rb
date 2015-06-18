@@ -89,21 +89,15 @@ validates :hours, presence: true, numericality: { greater_than_or_equal_to: 0 }
     attendances.create(event: event)
   end
 
+  # Returns true if the user is the admin of some group.
   def admin_of?(group)
     memberships.exists?(group_id: group.id, admin: true)
   end
 
+  # Gives the attendance for an event.
   def attendance_for(event)
     attendances.where(event_id: event.id).first
   end
-
-  # def hours
-  #   r = 0
-  #   attendances.where(checked: true).each do |attendance|
-  #     r += attendance.hours
-  #   end
-  #   r
-  # end
 
   private
 

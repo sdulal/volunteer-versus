@@ -5,6 +5,7 @@ class EventsController < ApplicationController
   def index
     @group = Group.find(params[:group_id])
     @events = @group.events.all
+    @show_admin_tools = false
   end
 
   def new
@@ -25,6 +26,7 @@ class EventsController < ApplicationController
 
   def show
     @event = Event.find(by_id)
+    @group = @event.group
     @attendees = @event.attendees
   end
 

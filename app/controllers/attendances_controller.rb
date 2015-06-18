@@ -7,7 +7,9 @@ class AttendancesController < ApplicationController
   # It is intended that events can get checked off in this view.
   def index
     @event = Event.find(params[:event_id])
+    @group = @event.group
     @attendees = @event.attendees
+    @show_admin_tools = current_user.admin_of?(@event.group) && @event.ended?
   end
 
   # Carrying out join event.
