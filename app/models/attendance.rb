@@ -23,11 +23,14 @@ class Attendance < ActiveRecord::Base
     end
 
     def credit_hours
-      old_hours = self.attendee.hours
+      old_attendee_hours = self.attendee.hours
+      old_group_hours = self.group.hours
       if checked?
-        attendee.update_attributes(hours: (old_hours + hours))
+        attendee.update_attributes(hours: (old_attendee_hours + hours))
+        group.update_attributes(hours: (old_group_hours + hours))
       else
-        attendee.update_attributes(hours: (old_hours - hours))
+        attendee.update_attributes(hours: (old_attendee_hours - hours))
+        group.update_attributes(hours: (old_group_hours - hours))
       end
     end
 
@@ -35,10 +38,12 @@ class Attendance < ActiveRecord::Base
       if (went_changed? || left_changed?) && (checked? && !checked_changed?)
         old_went = went_changed? ? went_change.first : went
         old_left = left_changed? ? left_change.first : left
-        old_hours = self.attendee.hours
+        old_attendee_hours = self.attendee.hours
+        old_group_hours = self.group.hours
         old_credit = (old_left - old_went) / 1.hour
         new_credit = hours
-        attendee.update_attributes(hours: (old_hours - old_credit + new_credit))
+        attendee.update_attributes(hours: (old_attendee_hours - old_credit + new_credit))
+        group.update_attributes(hours: (old_group_hours - old_credit + new_credit))
       end
     end
 

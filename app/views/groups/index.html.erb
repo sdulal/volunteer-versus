@@ -1,7 +1,16 @@
 <h1>Groups</h1>
 
-<ul>
-  <%= render @groups %>
-</ul>
+<ol>
+  <% @groups.each do |group| %>
+    <li>
+      <ul>
+        <li><%= link_to group.name, group %></li>
+        <li><%= group.users.count %> members</li>
+        <li>A source of <%= group.hours %> volunteering hours</li>
+        <p><%= group.description %></p>
+      </ul>
+    </li>
+  <% end %>
+</ol>
 
 <%= link_to "Create a new group", new_group_path %>

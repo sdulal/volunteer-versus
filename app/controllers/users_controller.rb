@@ -53,7 +53,10 @@ class UsersController < ApplicationController
 
   def events
     @user = User.find(by_id)
-    @events = @user.events
+    @events = []
+    @user.attendances.where(checked: true).each do |attendance|
+      @events << attendance.event
+    end
   end
 
   private

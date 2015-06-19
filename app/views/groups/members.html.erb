@@ -1,0 +1,22 @@
+<h1>Members of <%= @group.name %></h1>
+
+<ul>
+  <% @members.each do |member| %>
+  <li>
+    <%= gravatar_for member, size: 50 %>
+    <%= link_to member.name, member %>
+    <% if current_user.admin_of?(@group) && !current_user?(member) %>
+      <%= link_to "Remove", membership_path(member.membership_for(@group)), method: :delete,
+                                  data: { confirm: "You sure?" } %>
+        <% if member.admin_of?(@group) %>
+          <%= link_to "Demote", membership_path(member.membership_for(@group), membership: { admin: false }), method: :put, data: { confirm: "You sure?" } %>
+        <% else %>
+          <%= link_to "Promote", membership_path(member.membership_for(@group), membership: { admin: true }), method: :put, data: { confirm: "You sure?" } %>
+        <% end %>
+    <% end %>
+    <ul>
+      <li>Member since <%= member.membership_for(@group).created_at %></li>
+    </ul>
+  </li>
+  <% end %>
+</ul>

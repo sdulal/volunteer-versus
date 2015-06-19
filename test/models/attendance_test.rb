@@ -39,29 +39,36 @@ class AttendanceTest < ActiveSupport::TestCase
     assert_not @attendance.valid?
   end
 
-  test "checking when proper should change user's hours" do
+  test "checking when proper should change user/group hours" do
     @attendee = @attendance.attendee
+    @group = @attendance.group
     @attendance.checked = true
     @attendance.save
     assert_equal 2, @attendee.hours
+    assert_equal 2, @group.hours
     @attendance.checked = false
     @attendance.save
     assert_equal 0, @attendee.hours
+    assert_equal 0, @group.hours
   end
 
-  test "attendance times should be able to change and affect user hours" do
+  test "attendance times should be able to change and affect user/group hours" do
     old_went = @attendance.went
     old_left = @attendance.left
     @attendee = @attendance.attendee
+    @group = @attendance.group
     @attendance.update_attributes(checked: true)
     assert_equal 2, @attendance.hours
     assert_equal 2, @attendee.hours
+    assert_equal 2, @group.hours
     @attendance.update_attributes(went: old_went + 1.hour)
     assert_equal 1, @attendance.hours
     assert_equal 1, @attendee.hours
+    assert_equal 1, @group.hours
     @attendance.update_attributes(left: old_left - (0.5).hour)
     assert_equal 0.5, @attendance.hours
     assert_equal 0.5, @attendee.hours
+    assert_equal 0.5, @group.hours
   end
 
 end

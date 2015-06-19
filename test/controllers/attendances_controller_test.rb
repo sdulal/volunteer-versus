@@ -9,6 +9,7 @@ class AttendancesControllerTest < ActionController::TestCase
     @group = groups(:key)
     @event = events(:keynect)
     @attendance = attendances(:nick_key)
+    @future_attendance = attendances(:will_attend)
   end
 
   test "should redirect everything if not logged in" do
@@ -48,6 +49,12 @@ class AttendancesControllerTest < ActionController::TestCase
     assert_redirected_to @event
   end
 
+  test "should redirect edit if event has not ended" do
+    log_in_as(@group_admin)
+    get :edit, id: @future_attendance.id
+    assert_redirected_to event_attendances_url(@future_attendance.event)
+  end
+
   test "should redirect update if not member" do
     log_in_as(@non_member)
     patch :update, id: @attendance.id
@@ -58,5 +65,11 @@ class AttendancesControllerTest < ActionController::TestCase
     log_in_as(@member)
     patch :update, id: @attendance.id
     assert_redirected_to @event
+  end
+
+  test "should redirect update if event has not ended" do
+    log_in_as(@group_admin)
+    patch :update, id: @future_attendance.id
+    assert_redirected_to event_attendances_url(@future_attendance.event)
   end
 end

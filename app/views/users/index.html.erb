@@ -2,7 +2,7 @@
   <% @users.each do |user| %>
     <li>
       <ul>
-        <li><%= user.name %></li>
+        <li><%= link_to user.name, user %></li>
         <li><%= user.hours %> hours volunteered</li>
         <li>Member of <%= user.memberships.count %> groups</li>
       </ul>

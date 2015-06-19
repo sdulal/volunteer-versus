@@ -5,12 +5,12 @@
 <ul>
   <li>On Volunteer Versus since <%= @group.created_at.to_s %></li>
   <li>
+    <a href="<%= group_members_path(@group) %>">
       <%= @group.users.count %> members
     </a>
   </li>
   <li>
       <%= @group.events.count %> events
-    </a>
   </li>
 </ul>
 

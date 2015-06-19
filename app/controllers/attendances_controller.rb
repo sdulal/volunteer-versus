@@ -2,6 +2,7 @@ class AttendancesController < ApplicationController
   before_action :logged_in_user
   before_action :member_user
   before_action :admin_user, only: [:edit, :update]
+  before_action :event_ended, only: [:edit, :update]
 
   # Showing all attendances for a particular event.
   # It is intended that events can get checked off in this view.
@@ -63,7 +64,17 @@ class AttendancesController < ApplicationController
     # Restricts certain actions only to admins of the related group
     def admin_user
       @attendance = Attendance.find(by_id)
+      flash[:danger] = "You must be an admin of the group."
       redirect_to @attendance.event unless @attendance.group.has_admin?(current_user)
+    end
+
+    # Checks that the event has ended
+    def event_ended
+      @event = Attendance.find(by_id).event
+      unless @event.ended?
+        flash[:danger] = "Cannot edit attendances until event ends."
+        redirect_to event_attendances_url(@event)
+      end
     end
 
 end

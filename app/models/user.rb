@@ -1,4 +1,4 @@
-class User < ActiveRecord::Base
+ class User < ActiveRecord::Base
 has_many :memberships, dependent: :destroy
 has_many :groups, through: :memberships
 # TODO: Give a proper way to specify admin groups.
@@ -92,6 +92,10 @@ validates :hours, presence: true, numericality: { greater_than_or_equal_to: 0 }
   # Returns true if the user is the admin of some group.
   def admin_of?(group)
     memberships.exists?(group_id: group.id, admin: true)
+  end
+
+  def membership_for(group)
+    memberships.where(group_id: group.id).first
   end
 
   # Gives the attendance for an event.

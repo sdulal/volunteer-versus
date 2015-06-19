@@ -39,11 +39,16 @@ class GroupsController < ApplicationController
   end
 
   def index
-    @groups = Group.all
+    @groups = Group.order(hours: :desc)
   end
 
   def show
     @group = Group.find(by_id)
+  end
+
+  def members
+    @group = Group.find(params[:group_id])
+    @members = @group.users
   end
 
   private

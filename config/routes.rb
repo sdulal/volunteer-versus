@@ -17,11 +17,12 @@ Rails.application.routes.draw do
   # inner hierarchy gets only: [:index, :new, :create]
   # only: [:show, :edit, :update, :destroy] gets flatted to be outside.
   resources :groups, shallow: true do
+    get :members
     resources :events do
       resources :attendances, except: [:show, :new]
     end
   end
-  resources :memberships, only: [:create, :destroy]
+  resources :memberships, only: [:create, :update, :destroy]
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
