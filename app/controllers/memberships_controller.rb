@@ -38,7 +38,7 @@ class MembershipsController < ApplicationController
     # Ensures that the only admin of a group cannot quit and leave no group admins.
     def prevent_zero_group_admins
       @group = Membership.find(params[:id]).group
-      if (@group.admins.count == 1) && @group.has_admin?(current_user)
+      if @group.has_one_admin?
         flash[:danger] = "You cannot quit unless there are other group admins."
         redirect_to @group
       end

@@ -1,22 +1,69 @@
 <%= provide(:title, @user.name) %>
-
-<h1>
-  <%= gravatar_for @user %>
-  <%= @user.name %>
-</h1>
-
-<section>
-  <li>Member of
-    <a href="<%= groups_user_path(@user) %>">
-      <%= pluralize(@user.groups.count, "group") %>
-    </a>
-  </li>
-  <li>Volunteered in
-    <a href="<%= events_user_path(@user) %>">
-      <%= @user.attendances.where(checked: true).count %> events
-    </a>
-  </li>
-  <li>Volunteered for <%= number_to_human(@user.reload.hours, precision: 2, strip_insignificant_zeros: true) %> hours.</li>
-</section>
-
-<%= link_to "Log out", logout_path, method: "delete" %>
+<div class="row">
+  <div class="col-md-6 center-block profile">
+    <section class="user-info">
+      <h1>
+        <%= gravatar_for @user, size: 100 %>
+        <%= @user.name %>
+      </h1>
+      <h6>
+        Joined on <%= @user.created_at.strftime("%B %d, %Y") %>
+      </h2>
+    </section>
+    <section class="stats">
+      <div class="stats">
+        <div id="groups" class="stat">
+          <a href="<%= groups_user_path(@user) %>">
+            <strong>
+              <%= @user.groups.count %>
+            </strong>
+            <%= 'group'.pluralize(@user.groups.count) %>
+          </a>
+        </div>
+        <div id="events" class="stat">
+          <a href="<%= events_user_path(@user) %>">
+            <strong>
+              <%= @user.events.count %>
+            </strong>
+            <%= 'event'.pluralize(@user.events.count) %>
+          </a>
+        </div>
+        <div id="hours" class="stat">
+          <a href="#">
+            <strong>
+              <%= number_to_human(@user.hours, precision: 2, strip_insignificant_zeros: true) %>
+            </strong>
+            <%= 'hour'.pluralize(@user.reload.hours) %>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="col-md-12">
+    <main class="recent-events">
+      <h1>
+        Recent Events
+      </h1>
+      <div class="events">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Event Name</th>
+              <th>Group</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @user.events.first(5).each do |event| %>
+              <tr>
+                <td><%= event.name %></td>
+                <td><%= event.group.name %></td>
+                <td><%= event.date.strftime("%B %d, %Y") %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>

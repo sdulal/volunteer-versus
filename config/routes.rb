@@ -14,8 +14,6 @@ Rails.application.routes.draw do
   resources :account_activations, only: [:edit]
   resources :password_resets, only: [:new, :create, :edit, :update]
 
-  # inner hierarchy gets only: [:index, :new, :create]
-  # only: [:show, :edit, :update, :destroy] gets flatted to be outside.
   resources :groups, shallow: true do
     get :members
     resources :events do

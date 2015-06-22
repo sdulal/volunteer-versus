@@ -1,4 +1,15 @@
-<%= form_for(@user) do |f| %>
-  <%= render 'fields', f: f %>
-  <%= f.submit "Save changes" %>
-<% end %>
+<%= provide(:title, "Edit user") %>
+<h1>Update your profile</h1>
+
+<div class="row">
+  <div class="gravatar_edit col-md-6 col-md-offset-3">
+    <%= gravatar_for @user, size: 100 %>
+    <a href="http://gravatar.com/emails" target="_blank">change</a>
+  </div>
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for(@user) do |f| %>
+      <%= render 'fields', f: f %>
+      <%= f.submit "Save changes", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>

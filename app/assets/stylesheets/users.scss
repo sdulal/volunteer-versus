@@ -1,3 +1,82 @@
 // Place all the styles related to the Users controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+/* Main page */
+
+.profile {
+    float: none;
+}
+
+section.user-info {
+    text-align: center;
+}
+
+h1 img.gravatar {
+  margin: 0 auto 10px auto;
+  display: block;
+}
+
+.stats {
+    text-align: center;
+}
+
+.stat {
+    display: inline-block;
+    position: relative;
+    right: 1em;
+    padding: 0 2em;
+    border-right: 1px solid lightgray;
+    margin-top: 2em
+}
+
+.stat strong {
+    display: block;
+    font-size: 2em;
+}
+
+.stat a {
+    font-size: 2em;
+}
+
+.stat a:hover {
+  text-decoration: none;
+}
+
+.stat a:hover {
+    text-decoration: none;
+}
+
+#hours {
+    border-right: none;
+}
+
+
+.recent-events h1 {
+    text-align: center;
+    margin: 2em 0 1em 0;
+}
+
+th, td {
+    text-align: center;
+}
+
+/* Profile picture edit */
+
+.gravatar_edit > * {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.gravatar_edit > a {
+    margin-top: 10px;
+}
+
+.gravatar_edit {
+    height: 150px;
+}
+
+.gravatar_edit > a {
+    margin-top: 15px;
+}

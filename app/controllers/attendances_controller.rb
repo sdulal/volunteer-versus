@@ -64,8 +64,10 @@ class AttendancesController < ApplicationController
     # Restricts certain actions only to admins of the related group
     def admin_user
       @attendance = Attendance.find(by_id)
-      flash[:danger] = "You must be an admin of the group."
-      redirect_to @attendance.event unless @attendance.group.has_admin?(current_user)
+      unless @attendance.group.has_admin?(current_user)
+        flash[:danger] = "You must be an admin of the group."
+        redirect_to @attendance.event 
+      end
     end
 
     # Checks that the event has ended

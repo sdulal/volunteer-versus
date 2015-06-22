@@ -4,7 +4,11 @@ class UsersController < ApplicationController
   before_action :admin_user, only: :destroy
   
   def index
-    @users = User.order(hours: :desc)
+    @users = User.paginate(page: params[:page])
+    @incrementer = 30 * (params[:page].to_i - 1) + 1
+    if @incrementer < 0
+      @incrementer = 1
+    end
   end
 
   def show
@@ -53,10 +57,7 @@ class UsersController < ApplicationController
 
   def events
     @user = User.find(by_id)
-    @events = []
-    @user.attendances.where(checked: true).each do |attendance|
-      @events << attendance.event
-    end
+    @events = @user.events
   end
 
   private

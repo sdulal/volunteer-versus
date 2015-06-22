@@ -1,11 +1,22 @@
-<%= form_for(@group) do |f| %>
-  <%= render 'shared/error_messages', object: f.object %>
+<%= provide(:title, "Create group") %>
+<h1>Create group</h1>
 
-  <%= f.label :name %>
-  <%= f.text_field :name %>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for(@group) do |f| %>
+      <%= render 'shared/error_messages', object: f.object %>
+      
+      <div class="form-group">
+        <%= f.label :name %>
+        <%= f.text_field :name, class: "form-control" %>
+      </div>
 
-  <%= f.label :description %>
-  <%= f.text_area :description %>
+      <div class="form-group">
+        <%= f.label :description %>
+        <%= f.text_area :description, class: "form-control" %>
+      </div>
 
-  <%= f.submit "Create group" %>
-<% end %>
+      <%= f.submit "Create group", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>

@@ -1,7 +1,7 @@
 class Group < ActiveRecord::Base
   has_many :memberships, dependent: :destroy
   has_many :users, through: :memberships
-  has_many :events
+  has_many :events, dependent: :destroy
   has_many :attendances, through: :events
   # default_scope -> { order(name: :asc)}
   validates :name, presence: true, length: { maximum: 50 }
@@ -12,6 +12,10 @@ class Group < ActiveRecord::Base
 
   def admins
     memberships.where(group: self, admin: true)
+  end
+
+  def has_one_admin?
+    admins.count == 1
   end
 
   def has_admin?(user)

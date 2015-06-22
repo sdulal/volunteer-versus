@@ -24,6 +24,7 @@
 <% end %>
 
 <% if @group.has_admin?(current_user) %>
-  <%= link_to 'Create event', new_group_event_path(@group) %>
+  <%= link_to "Create event", new_group_event_path(@group) %>
+  <%= link_to "Group settings", edit_group_path(@group) %>
 <% end %>
 <!-- All the events will be here! -->

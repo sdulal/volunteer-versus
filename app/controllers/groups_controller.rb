@@ -39,7 +39,11 @@ class GroupsController < ApplicationController
   end
 
   def index
-    @groups = Group.order(hours: :desc)
+    @groups = Group.paginate(page: params[:page])
+    @incrementer = 30 * (params[:page].to_i - 1) + 1
+    if @incrementer < 0
+      @incrementer = 1
+    end
   end
 
   def show

@@ -1,16 +1,36 @@
-<h1>Groups</h1>
+<%= provide(:title, "Groups") %>
+<div class="row">
+  <div class="col-md-12">
+    <h1>Groups</h1>
+    <p class="table-info">See the volunteering groups that are the key points of interaction in this website!</p>
+  </div>
+  <div class="groups-competitive">
+    <%= will_paginate %>
+    <table class="table table-hover">
+      <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Hours</th>
+            <th>Events</th>
+            <th>Members</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @groups.each_with_index do |group, index| %>
+            <tr>
+              <td><%= @incrementer + index %></td>
+              <td><%= link_to group.name, group %></td>
+              <td><%= number_to_human(group.hours, precision: 2, strip_insignificant_zeros: true) %></td>
+              <td><%= group.events.count %></td>
+              <td><%= group.users.count %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </table>
+    <%= will_paginate %>
+  </div>
+</div>
 
-<ol>
-  <% @groups.each do |group| %>
-    <li>
-      <ul>
-        <li><%= link_to group.name, group %></li>
-        <li><%= group.users.count %> members</li>
-        <li>A source of <%= group.hours %> volunteering hours</li>
-        <p><%= group.description %></p>
-      </ul>
-    </li>
-  <% end %>
-</ol>
-
-<%= link_to "Create a new group", new_group_path %>
+<%= link_to "Create a new group", new_group_path, class: "btn btn-primary centered" %>

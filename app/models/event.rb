@@ -1,6 +1,6 @@
 class Event < ActiveRecord::Base
   belongs_to :group
-  has_many :attendances
+  has_many :attendances, dependent: :destroy
   has_many :attendees, through: :attendances
   default_scope -> { order(date: :desc) }
   validates :name, presence: true
