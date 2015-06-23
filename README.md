@@ -1,12 +1,11 @@
-== Volunteer Versus
+# Volunteer Versus
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Volunteer Versus is an online application that allows volunteering organizations to better manage hours. Club officers simply check off members for events so that members can get hours credited. Through a leaderboard system, users and groups are able to see exactly who volunteers the most, which club has the most members, etc.
 
-Things to cover:
+This application runs *Ruby on Rails 4.2.0*.
 
-* Ruby version
-
+# Setup
+Will cover:
 * System dependencies
 
 * Configuration
