@@ -1,5 +1,12 @@
-<%= provide(:title, "Attending users!") %>
+<%= provide(:title, "Attending " + @event.name) %>
 
-<h1>All the people attending <%= @event.name %>.</h1>
+<h1>Attending '<%= @event.name %>'</h1>
 
-<%= render partial: 'attendances/attendee', collection: @attendees, locals: { group: @group, show_admin_tools: @show_admin_tools } %>
+<div class="row">
+  <div class="col-md-6 center-block members">
+    <ul>
+      <%= render partial: 'attendances/attendee', collection: @attendees, locals: { group: @group, show_admin_tools: @show_admin_tools } %>
+    </ul>
+    <%= will_paginate @attendees %>
+  </div>
+</div>

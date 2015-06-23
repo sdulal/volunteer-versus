@@ -1,3 +1,10 @@
-// Place all the styles related to the attendances controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+#attendee {
+    font-size: 1.5em;
+    margin-top: 10px;
+}
+
+#attendees-peek .attendee-item {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid lightgray;
+}

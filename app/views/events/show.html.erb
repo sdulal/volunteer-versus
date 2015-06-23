@@ -1,32 +1,45 @@
-<%= @event.name %>
-<br>
-<%= @event.date.to_formatted_s(:long) %>
-<br>
-<%= @event.start_time.to_formatted_s(:time) %>
-<br>
-<%= @event.end_time.to_formatted_s(:time) %>
-<br>
-<%= @event.location %>
-<br>
+<%= provide(:title, @event.name) %>
+<h1><%= @event.name %></h1>
 
-<%= @event.description %>
-<br>
-
-
-<h2>
-  Here are all the people going to the event!
-</h2>
-<%= render partial: 'attendances/attendee', collection: @attendees, locals: { group: @group, show_admin_tools: @show_admin_tools } %>
-
-
-
-<% if @event.group.has_admin?(current_user) %>
-  <ul>
-    <li><%= link_to "Edit event", edit_event_path(@event) %></li>
-    <% if @event.ended? %>
-      <li><%= link_to "Check attendances", event_attendances_path(@event) %></li>
-    <% end %>
-  </ul>
-<% end %>
-
-<%= render 'attendances/attendance_actions' %>
+<div class="row">
+  <div class="col-md-6">
+    <h2>Info</h2>
+    <dl class="dl-horizontal">
+      <dt>Date</dt>
+      <dd><%= @event.date.to_formatted_s(:long) %></dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Starts at</dt>
+      <dd><%= @event.start_time.strftime("%l:%M %p") %></dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Ends at </dt>
+      <dd><%= @event.end_time.strftime("%l:%M %p") %></dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Location</dt>
+      <dd><%= @event.location %></dd>
+    </dl>
+    <p id="event-desc">
+      <%= @event.description %>
+    </p>
+    <div class="admin-event-actions">
+      <% if @event.group.has_admin?(current_user) %>
+        <ul id="admin-event-buttons">
+          <li><%= link_to "Edit event", edit_event_path(@event), class: "btn btn-primary" %></li>
+          <% if @event.ended? %>
+            <li><%= link_to "Check attendances", event_attendances_path(@event), class: "btn btn-primary" %></li>
+          <% end %>
+        </ul>
+      <% end %>
+    </div>
+    <%= render 'attendances/attendance_actions' %>
+  </div>
+  <div class="col-md-6">
+    <h2>Going</h2>
+    <ul id="attendees-peek">
+      <%= render partial: 'attendances/attendee', collection: @attendees, locals: { group: @group, show_admin_tools: @show_admin_tools } %>
+    </ul>
+    <%= will_paginate @attendees %>
+  </div>
+</div>

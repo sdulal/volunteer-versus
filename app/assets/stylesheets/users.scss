@@ -8,10 +8,6 @@
     float: none;
 }
 
-section.user-info {
-    text-align: center;
-}
-
 h1 img.gravatar {
   margin: 0 auto 10px auto;
   display: block;
@@ -79,4 +75,13 @@ th, td {
 
 .gravatar_edit > a {
     margin-top: 15px;
+}
+
+.user-group-name {
+    font-size: 2em;
+    margin-bottom: 5px;
+}
+
+.event-info {
+    padding: 0;
 }

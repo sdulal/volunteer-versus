@@ -1,1 +1,14 @@
-<%= render @groups %>
+<%= provide(:title, @user.name + "'s groups") %>
+<h1><%= @user.name + "'s groups" %></h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <% @groups.each do |group| %>
+      <dl class="user-group">
+        <dt class="user-group-name"><%= link_to group.name, group %></dt>
+        <dd class="user-group-desc"><%= short_desc(group) %></dd>
+      </dl>
+    <% end %>
+    <%= will_paginate @groups %>
+  </div>
+</div>

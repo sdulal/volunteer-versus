@@ -1,3 +1,62 @@
-// Place all the styles related to the groups controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+.group-actions {
+  margin-top: 40px;
+}
+
+.upcoming-events {
+    margin-top: 50px;
+}
+
+.members {
+    float: none;
+}
+
+ul {
+    list-style: none;
+}
+
+.member-pic {
+    float: left;
+    margin-right: 20px;
+}
+
+.members li {
+  clear: both;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid lightgray;
+}
+
+.member-name {
+    font-size: 1.75em;
+}
+
+.member-title {
+    display: inline-block;
+    width: 100%;
+    position: relative;
+}
+
+.member-time {
+    margin-top: 5px;
+}
+
+.admin-member-actions {
+    margin-top: 10px;
+}
+
+.admin-member-actions > * {
+    margin: 10px 50px;
+}
+
+.attendance-actions .centered {
+    width: 100%;
+}
+
+.membership-button {
+    display: inline-block;
+}
+
+#group-buttons {
+    display: inline-block;
+    float: right;
+}

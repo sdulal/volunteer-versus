@@ -9,7 +9,7 @@ class AttendancesController < ApplicationController
   def index
     @event = Event.find(params[:event_id])
     @group = @event.group
-    @attendees = @event.attendees
+    @attendees = @event.attendees.paginate(page: params[:page])
     @show_admin_tools = current_user.admin_of?(@event.group) && @event.ended?
   end
 
@@ -17,7 +17,7 @@ class AttendancesController < ApplicationController
   def create
     @attendance = Attendance.new(attendee: current_user, event_id: params[:event_id])
     @attendance.save
-    flash[:success] = "Joined successfully"
+    flash[:success] = "Joined event."
     redirect_to event_url(params[:event_id])
   end
 
@@ -41,8 +41,8 @@ class AttendancesController < ApplicationController
   def destroy
     @event = Attendance.find(by_id).event
     Attendance.find(by_id).destroy
-    flash[:success] = "Quit successfully!"
-    redirect_to @event
+    flash[:success] = "Quit event."
+    redirect_to group_events_url(@event.group)
   end
 
   private

@@ -25,6 +25,9 @@ textarea {
   resize: vertical;
 }
 
+ul {
+  list-style: none;
+}
 
 /* typography */
 
@@ -162,6 +165,7 @@ input {
   margin-left: 0;
 }
 
+/* Table-based index pages */
 .table-info {
     text-align: center;
     font-size: 1.2em;
@@ -170,4 +174,12 @@ input {
 .centered {
   display: table;
   margin: 10px auto;
+}
+
+section.initial-info {
+    text-align: center;
+}
+
+.initial-info p {
+    margin-top: 25px;
 }

@@ -4,7 +4,7 @@
 <br>
 <%= event.start_time.to_formatted_s(:time) %>
 <br>
-<%= event.end_time.to_formatted_s(:time) %>
+<%= event.start_time.strftime("%l %p") %>
 <br>
 <%= event.location %>
 <br>

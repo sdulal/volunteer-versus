@@ -1,12 +1,20 @@
-<li>
-  <%= gravatar_for attendee, size: 50 %>
-  <%= link_to attendee.name, attendee %>
+<li class="attendee-item">
+  <div class="member-title">
+    <div class="member-pic">
+      <%= gravatar_for attendee, size: 50 %>
+    </div>
+    <div id="attendee" class="member-name">
+      <%= link_to attendee.name, attendee %>
+    </div>
+  </div>
   <% if show_admin_tools %>
-    <% if attendee.got_checked_for?(@event) %>
-      <%= link_to "Uncheck off", attendance_path( attendee.attendance_for(@event), attendance: { checked: false }), method: :put %>
-    <% else %>
-      <%= link_to "Check off", attendance_path( attendee.attendance_for(@event), attendance: { checked: true }), method: :put %>
-    <% end %>
-    <%= link_to "Advanced edit", edit_attendance_path(attendee.attendance_for(@event)) %>
+    <div class="admin-member-actions">
+      <% if attendee.got_checked_for?(@event) %>
+        <%= link_to "Uncheck off", attendance_path( attendee.attendance_for(@event), attendance: { checked: false }), method: :put %>
+      <% else %>
+        <%= link_to "Check off", attendance_path( attendee.attendance_for(@event), attendance: { checked: true }), method: :put %>
+      <% end %>
+      <%= link_to "Advanced edit", edit_attendance_path(attendee.attendance_for(@event)) %>
+    </div>
   <% end %>
 </li>

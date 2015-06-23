@@ -1,30 +1,78 @@
-<h1><%= @group.name %></h1>
-
-<p><%= @group.description %></p>
-
-<ul>
-  <li>On Volunteer Versus since <%= @group.created_at.to_s %></li>
-  <li>
-    <a href="<%= group_members_path(@group) %>">
-      <%= @group.users.count %> members
-    </a>
-  </li>
-  <li>
-      <%= @group.events.count %> events
-  </li>
-</ul>
+<%= provide(:title, @group.name) %>
+<div class="row">
+  <div class="col-md-6 center-block profile">
+    <section class="initial-info">
+      <h1>
+        <%= @group.name %>
+      </h1>
+      <h6>
+        On Volunter Versus since <%= @group.created_at.strftime("%B %d, %Y") %>
+      </h6>
+      <p><%= @group.description %></p>
+    </section>
+    <section class="stats">
+      <div class="stats">
+        <div id="members" class="stat">
+          <a href="<%= group_members_path(@group) %>">
+            <strong>
+              <%= @group.users.count %>
+            </strong>
+            <%= 'member'.pluralize(@group.users.count) %>
+          </a>
+        </div>
+        <div id="events" class="stat">
+          <a href="<%= group_events_path(@group) %>">
+            <strong>
+              <%= @group.events.count %>
+            </strong>
+            <%= 'event'.pluralize(@group.events.count) %>
+          </a>
+        </div>
+        <div id="hours" class="stat">
+          <a href="#">
+            <strong>
+              <%= number_to_human(@group.hours, precision: 2, strip_insignificant_zeros: true) %>
+            </strong>
+            <%= 'hour'.pluralize(@group.reload.hours) %>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
 
 <% if @group.has_member?(current_user) %>
-  You are a member of this group!
-  <%= link_to "View events", group_events_path(@group) %>
-  <%= render 'quit' %>
-<% else %>
-  Join!
-  <%= render 'join' %>
+  <div class="row upcoming-events">
+    <div class="col-md-12 center-block">
+      <h2>Upcoming Events <%= link_to "(view all)", group_events_path(@group) %></h2>
+      <table class="table table-hover">
+        <tbody>
+          <% @group.events.first(5).each do |event| %>
+            <tr>
+              <td><%= link_to event.name, event %></td>
+              <td><%= event.date.strftime("%B %d, %Y") %></td>
+              <td><%= event.start_time.strftime("%l:%M %p") %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
 <% end %>
 
-<% if @group.has_admin?(current_user) %>
-  <%= link_to "Create event", new_group_event_path(@group) %>
-  <%= link_to "Group settings", edit_group_path(@group) %>
-<% end %>
-<!-- All the events will be here! -->
+
+<div class="row">
+  <div class="col-md-4 col-md-offset-8 group-actions">
+    <div id="group-buttons">
+      <% if @group.has_admin?(current_user) %>
+        <%= link_to "Create event", new_group_event_path(@group), class: "btn btn-primary" %>
+        <%= link_to "Group settings", edit_group_path(@group), class: "btn btn-primary" %>
+      <% end %>
+      <% if @group.has_member?(current_user) %>
+        <%= render 'quit' %>
+      <% else %>
+        <%= render 'join' %>
+      <% end %>
+    </div>
+  </div>
+</div>  

@@ -1,14 +1,14 @@
 <%= provide(:title, @user.name) %>
 <div class="row">
   <div class="col-md-6 center-block profile">
-    <section class="user-info">
+    <section class="initial-info">
       <h1>
         <%= gravatar_for @user, size: 100 %>
         <%= @user.name %>
       </h1>
       <h6>
         Joined on <%= @user.created_at.strftime("%B %d, %Y") %>
-      </h2>
+      </h6>
     </section>
     <section class="stats">
       <div class="stats">
@@ -54,7 +54,7 @@
             </tr>
           </thead>
           <tbody>
-            <% @user.events.first(5).each do |event| %>
+            <% @recent_events.each do |event| %>
               <tr>
                 <td><%= event.name %></td>
                 <td><%= event.group.name %></td>

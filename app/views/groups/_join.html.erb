@@ -1,4 +1,6 @@
-<%= form_for(current_user.memberships.build) do |f| %>
-  <%= hidden_field_tag :group_id, @group.id %>
-  <%= f.submit "Join" %>
-<% end %>
+<div class="membership-button">
+  <%= form_for(current_user.memberships.build) do |f| %>
+    <%= hidden_field_tag :group_id, @group.id %>
+    <%= f.submit "Join", class: "btn btn-primary" %>
+  <% end %>
+</div>

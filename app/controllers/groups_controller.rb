@@ -1,5 +1,6 @@
 class GroupsController < ApplicationController
   before_action :logged_in_user
+  before_action :member_user, except: [:index, :new, :create, :show]
   before_action :admin_user, only: [:edit, :update, :destroy]
 
   def new
@@ -59,6 +60,18 @@ class GroupsController < ApplicationController
 
     def group_params
       params.require(:group).permit(:name, :description)
+    end
+
+    def member_user
+      if params[:group_id]
+        @group = Group.find(params[:group_id])
+      else
+        @group = Group.find(by_id)
+      end
+      unless @group.has_member?(current_user)
+        flash[:danger] = "The page you requested is only available to members."
+        redirect_to @group
+      end
     end
 
     def admin_user

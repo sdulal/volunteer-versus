@@ -13,6 +13,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(by_id)
+    @recent_events = @user.events.where(['date < ?', Date.today]).first(5)
   end
 
   def create
@@ -52,12 +53,12 @@ class UsersController < ApplicationController
 
   def groups
     @user = User.find(by_id)
-    @groups = @user.groups
+    @groups = @user.groups.paginate(page: params[:page])
   end
 
   def events
     @user = User.find(by_id)
-    @events = @user.events
+    @events = @user.events.paginate(page: params[:page])
   end
 
   private

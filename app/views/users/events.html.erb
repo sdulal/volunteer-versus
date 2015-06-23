@@ -1,1 +1,17 @@
-<%= render @events %>
+<%= provide(:title, @user.name + "'s events") %>
+<h1><%= @user.name + "'s events" %></h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <% @events.each do |event| %>
+      <h3><%= link_to_if event.group.has_member?(current_user), event.name, event %></h3>
+      <ul class="event-info">
+        <li><%= "Organized by " + event.group.name %></li>
+        <li><%= event.date.strftime("%B %d, %Y") %></li>
+      </ul>
+      <p class="user-event-desc"><%= short_desc(event) %></p>
+      </dl>
+    <% end %>
+    <%= will_paginate @events %>
+  </div>
+</div>
