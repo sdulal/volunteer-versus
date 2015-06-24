@@ -46,10 +46,12 @@ class AttendanceTest < ActiveSupport::TestCase
     @attendance.save
     assert_equal 2, @attendee.hours
     assert_equal 2, @group.hours
+    assert_equal 2, @attendee.membership_for(@group).hours
     @attendance.checked = false
     @attendance.save
     assert_equal 0, @attendee.hours
     assert_equal 0, @group.hours
+    assert_equal 0, @attendee.membership_for(@group).hours
   end
 
   test "attendance times should be able to change and affect user/group hours" do
@@ -58,17 +60,17 @@ class AttendanceTest < ActiveSupport::TestCase
     @attendee = @attendance.attendee
     @group = @attendance.group
     @attendance.update_attributes(checked: true)
-    assert_equal 2, @attendance.hours
     assert_equal 2, @attendee.hours
     assert_equal 2, @group.hours
+    assert_equal 2, @attendee.membership_for(@group).hours
     @attendance.update_attributes(went: old_went + 1.hour)
-    assert_equal 1, @attendance.hours
     assert_equal 1, @attendee.hours
     assert_equal 1, @group.hours
+    assert_equal 1, @attendee.membership_for(@group).hours
     @attendance.update_attributes(left: old_left - (0.5).hour)
-    assert_equal 0.5, @attendance.hours
     assert_equal 0.5, @attendee.hours
     assert_equal 0.5, @group.hours
+    assert_equal 0.5, @attendee.membership_for(@group).hours
   end
 
 end

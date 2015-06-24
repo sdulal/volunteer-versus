@@ -37,6 +37,9 @@
           </a>
         </div>
       </div>
+      <% if @group.has_member?(current_user) %>
+        <p id="current-member-hours">You have volunteered <%= number_to_human(@your_hours, precision: 2, strip_insignificant_zeros: true) %> hours here!</p>
+      <% end %>
     </section>
   </div>
 </div>
@@ -75,4 +78,4 @@
       <% end %>
     </div>
   </div>
-</div>  
+</div>

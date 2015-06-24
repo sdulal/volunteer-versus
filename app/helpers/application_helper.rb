@@ -10,6 +10,7 @@ module ApplicationHelper
     end
   end
 
+  # Convenience method for getting by id.
   def by_id
     params[:id]
   end

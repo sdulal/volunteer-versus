@@ -16,6 +16,10 @@ class Attendance < ActiveRecord::Base
     (left - went) / 1.hour
   end
 
+  def related_membership
+    attendee.membership_for(group)
+  end
+
   private
 
     def assign_default_times
@@ -26,12 +30,16 @@ class Attendance < ActiveRecord::Base
     def credit_hours
       old_attendee_hours = self.attendee.hours
       old_group_hours = self.group.hours
+      membership = related_membership
+      old_membership_hours = membership.hours
       if checked?
         attendee.update_attributes(hours: (old_attendee_hours + hours))
         group.update_attributes(hours: (old_group_hours + hours))
+        membership.update_attributes(hours: (old_membership_hours + hours))
       else
         attendee.update_attributes(hours: (old_attendee_hours - hours))
         group.update_attributes(hours: (old_group_hours - hours))
+        membership.update_attributes(hours: (old_membership_hours - hours))
       end
     end
 
@@ -41,10 +49,13 @@ class Attendance < ActiveRecord::Base
         old_left = left_changed? ? left_change.first : left
         old_attendee_hours = self.attendee.hours
         old_group_hours = self.group.hours
+        membership = related_membership
+        old_membership_hours = membership.hours
         old_credit = (old_left - old_went) / 1.hour
         new_credit = hours
         attendee.update_attributes(hours: (old_attendee_hours - old_credit + new_credit))
         group.update_attributes(hours: (old_group_hours - old_credit + new_credit))
+        membership.update_attributes(hours: (old_membership_hours - old_credit + new_credit))
       end
     end
 

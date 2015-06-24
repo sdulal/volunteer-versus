@@ -3,8 +3,9 @@ class Group < ActiveRecord::Base
   has_many :users, through: :memberships
   has_many :events, dependent: :destroy
   has_many :attendances, through: :events
-  # default_scope -> { order(name: :asc)}
   validates :name, presence: true, length: { maximum: 50 }
+  validates :hours, presence: true,
+                    numericality: { greater_than_or_equal_to: 0 }
 
   def has_member?(user)
     memberships.exists?(user: user)

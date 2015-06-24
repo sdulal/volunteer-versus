@@ -49,6 +49,9 @@ class GroupsController < ApplicationController
 
   def show
     @group = Group.find(by_id)
+    if @group.has_member?(current_user)
+      @your_hours = current_user.membership_for(@group).hours
+    end
   end
 
   def members

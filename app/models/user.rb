@@ -1,20 +1,20 @@
- class User < ActiveRecord::Base
-has_many :memberships, dependent: :destroy
-has_many :groups, through: :memberships
-# TODO: Give a proper way to specify admin groups.
-has_many :attendances, foreign_key: "attendee_id", dependent: :destroy
-has_many :events, through: :attendances
-attr_accessor :remember_token, :activation_token, :reset_token
-before_save :downcase_email
-before_create :create_activation_digest
-validates :name, presence: true, length: { maximum: 50 }
-VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
-validates :email, presence: true, length: { maximum: 255 },
-                  format: { with: VALID_EMAIL_REGEX },
-                  uniqueness: { case_sensitive: false }
-has_secure_password
-validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
-validates :hours, presence: true, numericality: { greater_than_or_equal_to: 0 }
+class User < ActiveRecord::Base
+  has_many :memberships, dependent: :destroy
+  has_many :groups, through: :memberships
+  has_many :attendances, foreign_key: "attendee_id", dependent: :destroy
+  has_many :events, through: :attendances
+  attr_accessor :remember_token, :activation_token, :reset_token
+  before_save :downcase_email
+  before_create :create_activation_digest
+  validates :name, presence: true, length: { maximum: 50 }
+  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
+  validates :email, presence: true, length: { maximum: 255 },
+                    format: { with: VALID_EMAIL_REGEX },
+                    uniqueness: { case_sensitive: false }
+  has_secure_password
+  validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
+  validates :hours, presence: true,
+                    numericality: { greater_than_or_equal_to: 0 }
 
 
   # Returns the hash digest of the given string.
@@ -101,6 +101,14 @@ validates :hours, presence: true, numericality: { greater_than_or_equal_to: 0 }
   # Gives the attendance for an event.
   def attendance_for(event)
     attendances.where(event_id: event.id).first
+  end
+
+  def hours_for_group(group)
+    if group.has_member?(self)
+      membership_for(group).hours
+    else
+      0
+    end
   end
 
   def got_checked_for?(event)

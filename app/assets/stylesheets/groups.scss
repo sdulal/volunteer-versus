@@ -60,3 +60,15 @@ ul {
     display: inline-block;
     float: right;
 }
+
+#current-member-hours {
+    margin-top: 30px;
+}
+
+.member-hours {
+    vertical-align: middle;
+    font-size: 2em;
+    position: absolute;
+    top: 10%;
+    right: 0;
+}

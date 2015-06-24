@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150619162802) do
+ActiveRecord::Schema.define(version: 20150624073746) do
 
   create_table "attendances", force: :cascade do |t|
     t.integer  "attendee_id"
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 20150619162802) do
     t.boolean  "admin",      default: false
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
+    t.decimal  "hours",      default: 0.0,   null: false
   end
 
   add_index "memberships", ["group_id"], name: "index_memberships_on_group_id"

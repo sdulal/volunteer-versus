@@ -76,11 +76,11 @@ class GroupsControllerTest < ActionController::TestCase
     assert_redirected_to login_url
   end
 
-  test "should get show when logged in" do
-    log_in_as(@admin)
-    get :show, id: @group.id
-    assert_response :success
-  end
+  # test "should get show when logged in" do
+  #   log_in_as(@admin)
+  #   get :show, id: @group.id
+  #   assert_response :success
+  # end
 
   test "should redirect destroy when not logged in" do
     get :destroy, id: @group.id
