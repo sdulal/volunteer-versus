@@ -53,6 +53,7 @@ end
     name = Faker::Lorem.word
     date = Faker::Date.between(2.days.ago, Date.today + 2.days)
     start_time = Faker::Time.between(2.days.ago, Time.now, :morning)
+    start_time = start_time - (start_time.sec).seconds
     end_time = start_time + 2.hours
     location = Faker::Address.street_address
     description = Faker::Lorem.paragraph
