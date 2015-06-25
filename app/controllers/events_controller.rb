@@ -11,17 +11,16 @@ class EventsController < ApplicationController
 
   def new
     @event = Event.new
-    @event.group_id = Group.find(params[:group_id])
   end
 
   def create
-    @event = Event.create(event_params)
+    @group = Group.find(params[:group_id])
+    @event = @group.events.build(event_params)
     if @event.save
       flash[:success] = "Event created!"
-      # The user should become a leader/owner of event.
       redirect_to @event
     else
-      redirect_to new_group_event_url
+      render 'new'
     end
   end
 
@@ -46,9 +45,10 @@ class EventsController < ApplicationController
   end
 
   def destroy
+    @group = Event.find(by_id).group
     Event.find(by_id).destroy
     flash[:success] = "Event deleted."
-    redirect_to user_url
+    redirect_to group_events_url(@group)
   end
 
   private

@@ -1,5 +1,5 @@
 <%= provide(:title, "Edit event") %>
-<h1>Editing event <%= @event.name %></h1>
+<h1>Editing event "<%= @event.name %>"</h1>
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
@@ -7,5 +7,17 @@
       <%= render 'fields', f: f %>
       <%= f.submit "Save changes", class: "btn btn-primary" %>
     <% end %>
+  </div>
+  <div class="col-md-6 col-md-offset-3 danger">
+    <h2>Delete event</h2>
+    <div class="panel panel-danger">
+      <div class="panel-heading">
+        This operation is destructive and irreversible.
+      </div>
+      <div class="panel-body">
+        Members who have attended the event will lose their hours.
+      </div>
+    </div>
+    <%= link_to "Delete event", @event, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger delete-link" %>
   </div>
 </div>
