@@ -31,7 +31,7 @@
         <div id="hours" class="stat">
           <a href="#">
             <strong>
-              <%= number_to_human(@user.hours, precision: 2, strip_insignificant_zeros: true) %>
+              <%= number_with_precision(@user.hours, precision: 2, strip_insignificant_zeros: true) %>
             </strong>
             <%= 'hour'.pluralize(@user.reload.hours) %>
           </a>

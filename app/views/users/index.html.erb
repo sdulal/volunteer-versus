@@ -22,7 +22,7 @@
             <tr>
               <td><%= @incrementer + index %></td>
               <td><%= link_to user.name, user %></td>
-              <td><%= number_to_human(user.hours, precision: 2, strip_insignificant_zeros: true) %></td>
+              <td><%= number_with_precision(user.hours, precision: 2, strip_insignificant_zeros: true) %></td>
               <td><%= user.groups.count %></td>
             </tr>
           <% end %>

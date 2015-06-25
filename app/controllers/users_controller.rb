@@ -2,9 +2,9 @@ class UsersController < ApplicationController
   before_action :logged_in_user, only: [:index, :edit, :update, :destroy]
   before_action :correct_user, only: [:edit, :update]
   before_action :admin_user, only: :destroy
-  
+
   def index
-    @users = User.paginate(page: params[:page])
+    @users = User.order(hours: :desc).paginate(page: params[:page])
     @incrementer = 30 * (params[:page].to_i - 1) + 1
     if @incrementer < 0
       @incrementer = 1
