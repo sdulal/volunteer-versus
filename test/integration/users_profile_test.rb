@@ -13,9 +13,10 @@ class UsersProfileTest < ActionDispatch::IntegrationTest
     assert_select 'title', full_title(@user.name)
     assert_select 'h1', text: @user.name
     assert_select 'h1>img.gravatar'
-    # assert_select 'div.pagination'
-    # @user.events.paginate(page: 1).each do |event|
-    #   assert_match event.content, response.body
-    # end
+    @user.last_n_events(5).each do |event|
+      assert_match event.name, response.body
+      assert_match event.group.name, response.body
+      assert_match event.date.strftime("%B %d, %Y"), response.body
+    end
   end
 end

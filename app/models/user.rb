@@ -116,6 +116,11 @@ class User < ActiveRecord::Base
     attendance && attendance.checked?
   end
 
+  # Returns the last 5 events (that passed) that the user attended.
+  def last_n_events(n)
+    events.where(['date < ?', Date.today]).first(5)
+  end
+
   private
 
     # Converts email to all lower-case.

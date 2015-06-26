@@ -21,7 +21,13 @@
           <% @users.each_with_index do |user, index| %>
             <tr>
               <td><%= @incrementer + index %></td>
-              <td><%= link_to user.name, user %></td>
+              <td>
+                <%= link_to user.name, user %>
+                <% if current_user.admin? && !current_user?(user) %>
+                  | <%= link_to "delete", user, method: :delete,
+                                  data: { confirm: "You sure?" } %>
+                <% end %>
+              </td>
               <td><%= number_with_precision(user.hours, precision: 2, strip_insignificant_zeros: true) %></td>
               <td><%= user.groups.count %></td>
             </tr>

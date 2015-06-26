@@ -13,7 +13,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(by_id)
-    @recent_events = @user.events.where(['date < ?', Date.today]).first(5)
+    @recent_events = @user.last_n_events(5)
   end
 
   def create
