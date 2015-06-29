@@ -15,20 +15,17 @@ class GroupsManagementTest < ActionDispatch::IntegrationTest
   #   @group = groups(:key)
   # end
 
-  # test "index as site admin including pagination and delete links" do
+  # test "index including pagination" do
   #   log_in_as(@admin_of_site_and_key)
   #   get groups_path
   #   assert_template 'groups/index'
   #   assert_select 'div.pagination'
-  #   first_page_of_groups = Group.paginate(page: 1)
+  #   first_page_of_groups = Group.order(hours: :desc).paginate(page: 1)
   #   first_page_of_groups.each do |group|
   #     assert_select 'a[href=?]', group_path(group), text: group.name
+  #     assert_match group.hours.count, response.body
   #     assert_match group.users.count, response.body
-  #     # assert_select 'a[href=?]', group_path(group), text: 'delete group'
   #   end
-  #   # assert_difference 'Group.count', -1 do
-  #   #   delete group_path(@group)
-  #   # end
   # end
 
   # test "show page as group admin" do
