@@ -7,3 +7,7 @@ key:
 circle:
   name: Circle
   description: Geometric!
+
+generic_group:
+  name: Generic
+  description: Regular.
