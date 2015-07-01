@@ -14,7 +14,7 @@
             <%= link_to member.name, member %>
           </div>
           <div class="member-hours">
-            <%= number_to_human(member.hours_for_group(@group), precision: 2, strip_insignificant_zeros: true) %> hours
+            <%= number_with_precision(member.hours_for_group(@group), precision: 2, strip_insignificant_zeros: true) %> hours
           </div>
           <div class="member-time">
             Member since <%= member.membership_for(@group).created_at.strftime("%B %d, %Y") %>

@@ -20,7 +20,7 @@ class MembershipsController < ApplicationController
   def destroy
     @membership = Membership.find(params[:id])
     @membership.destroy
-    redirect_to :back
+    redirect_to @membership.group
   end
 
   private
