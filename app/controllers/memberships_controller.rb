@@ -6,6 +6,7 @@ class MembershipsController < ApplicationController
   def create
     @group = Group.find(params[:group_id])
     current_user.join(@group)
+    flash[:success] = "Joined #{@group.name} successfully!"
     redirect_to @group
   end
 
@@ -20,6 +21,7 @@ class MembershipsController < ApplicationController
   def destroy
     @membership = Membership.find(params[:id])
     @membership.destroy
+    flash[:success] = "Quit #{@group.name} successfully."
     redirect_to @membership.group
   end
 

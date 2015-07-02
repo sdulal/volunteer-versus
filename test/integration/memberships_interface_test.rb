@@ -1,18 +1,17 @@
 require 'test_helper'
 
 class MembershipsInterfaceTest < ActionDispatch::IntegrationTest
-  # Goals:
-  # Test the user's groups page*
-  # Test user's ability to join a group (ajax method planned)
-  # Maybe: Test a user's admin groups page (groups he/she is admin of)
 
   def setup
     @user = users(:generic_user)
     @group = groups(:generic_group)
     add_n_random_events_to(@group, n: 5)
+    @event = @group.events.first
   end
 
-  test "joining and quitting group" do
+  test "joining and quitting group with view changes" do
+    get group_path(@group)
+    assert_redirected_to login_url
     log_in_as(@user)
     get group_path(@group)
     assert_template 'groups/show'
@@ -21,11 +20,11 @@ class MembershipsInterfaceTest < ActionDispatch::IntegrationTest
     get group_members_path(@group)
     assert_not flash.empty?
     assert_redirected_to @group
-    follow_redirect!
     # Join the group
     assert_difference '@user.groups.count', 1 do
       post memberships_path, group_id: @group.id
     end
+    assert_not flash.empty?
     assert_redirected_to @group
     follow_redirect!
     # Seeing more things related to events
@@ -38,7 +37,8 @@ class MembershipsInterfaceTest < ActionDispatch::IntegrationTest
     # Check that the user is listed on the members' page
     get group_members_path(@group)
     assert_select 'a[href=?]', user_path(@user), text: @user.name
-    assert_match @user.membership_for(@group).created_at.strftime("%B %d, %Y"), response.body
+    assert_match @user.membership_for(@group)
+                      .created_at.strftime("%B %d, %Y"), response.body
     # See that the group shows up in user profile
     get groups_user_path(@user)
     assert_template 'users/groups'
@@ -52,5 +52,20 @@ class MembershipsInterfaceTest < ActionDispatch::IntegrationTest
     end
     assert_redirected_to @group
     follow_redirect!
+  end
+
+  test "accessing events in group" do
+    # No log in
+    get event_path(@event)
+    assert_redirected_to login_url
+    # No membership
+    log_in_as(@user)
+    get event_path(@event)
+    assert_not flash.empty?
+    assert_redirected_to group_events_path(@event.group)
+    # Membership
+    @user.join(@group)
+    get event_path(@event)
+    assert_template 'events/show'
   end
 end

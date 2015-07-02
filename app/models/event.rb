@@ -18,11 +18,11 @@ class Event < ActiveRecord::Base
   end
 
   def has_attendee?(attendee)
-    attendees.exists?(attendee)
+    attendees.exists?(attendee.id)
   end
 
   def ended?
-    (Date.today > date) || (Date.today == date && 
+    (Date.today > date) || (Date.today == date &&
                             Time.now.hour >= end_time.hour)
   end
 
