@@ -15,7 +15,7 @@ class GroupsController < ApplicationController
       @group.promote_to_admin(current_user)
       redirect_to group_url(@group)
     else
-      redirect_to new_group_url
+      render 'new'
     end
   end
 

@@ -11,3 +11,9 @@ circle:
 generic_group:
   name: Generic
   description: Regular.
+
+<% 30.times do |n| %>
+group_<%= n %>:
+  name: <%= "Group #{n}" %>
+  description: This is <%= "Group #{n}" %>
+<% end %>
