@@ -6,11 +6,25 @@ class GroupsManagementTest < ActionDispatch::IntegrationTest
   # Test group page
   # Test group editing page.
   # Test group members page.
-  # Test group events page.
 
   def setup
     @user = users(:generic_user)
     @group = groups(:generic_group)
+    @user.join(@group)
+    @group.promote_to_admin(@user)
+  end
+
+  test "index including pagination" do
+    log_in_as(@user)
+    get groups_path
+    assert_template 'groups/index'
+    assert_select 'div.pagination'
+    first_page_of_groups = Group.order(hours: :desc).paginate(page: 1)
+    first_page_of_groups.each do |group|
+      assert_select 'a[href=?]', group_path(group), text: group.name
+      # assert_match group.hours, response.body
+      # assert_match group.users.count, response.body
+    end
   end
 
   test "group creation" do
@@ -35,26 +49,13 @@ class GroupsManagementTest < ActionDispatch::IntegrationTest
     end
     group = assigns(:group)
     assert_redirected_to group
-  end
-
-  test "index including pagination" do
-    log_in_as(@user)
-    get groups_path
-    assert_template 'groups/index'
-    assert_select 'div.pagination'
-    first_page_of_groups = Group.order(hours: :desc).paginate(page: 1)
-    first_page_of_groups.each do |group|
-      assert_select 'a[href=?]', group_path(group), text: group.name
-      # assert_match group.hours, response.body
-      # assert_match group.users.count, response.body
-    end
+    follow_redirect!
+    assert_template 'groups/show'
   end
 
   test "show page as group admin" do
-    # Proper membership
+    # Setup
     log_in_as(@user)
-    @user.join(@group)
-    @group.promote_to_admin(@user)
     add_n_random_events_to(@group, n: 5)
     # Page elements
     get group_path(@group)
@@ -74,6 +75,47 @@ class GroupsManagementTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "show page as non-admin" do
+  test "group edit" do
+    # Not logged in
+    get edit_group_path(@group)
+    assert_redirected_to login_url
+    # Logged in as admin
+    log_in_as(@user)
+    get edit_group_path(@group)
+    assert_template 'groups/edit'
+    # Proper form elements on page
+    assert_select '[name=?]', "group[name]"
+    assert_select '[name=?]', "group[description]"
+    # Invalid
+    patch group_path(@group), group: { name: "",
+                                        description: "Sth" }
+    assert_template 'groups/edit'
+    # Valid
+    new_name = "Special"
+    new_desc = "Surprise"
+    patch group_path(@group), group: { name: new_name,
+                                        description: new_desc }
+    assert_redirected_to @group
+    follow_redirect!
+    assert_select 'title', new_name + " | Volunteer Versus"
+    assert_match new_name, response.body
+    assert_match new_desc, response.body
+  end
+
+  test "group destruction" do
+    # Logged in as admin
+    log_in_as(@user)
+    get edit_group_path(@group)
+    assert_template 'groups/edit'
+    assert_select 'a[data-method="delete"]'
+    delete group_path, group: @group
+    assert_redirected_to groups_url
+    follow_redirect!
+    # Group should not be listed anymore anywhere.
+    assert_template 'groups/index'
+    assert_select 'a[href=?]', group_path(@group), text: @group.name, count: 0
+    get groups_user_path(@user)
+    assert_template 'users/groups'
+    assert_select 'a[href=?]', group_path(@group), text: @group.name, count: 0
   end
 end
