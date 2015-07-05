@@ -21,8 +21,13 @@ class MembershipsController < ApplicationController
   def destroy
     @membership = Membership.find(params[:id])
     @membership.destroy
-    flash[:success] = "Quit #{@group.name} successfully."
-    redirect_to @membership.group
+    if @membership.user == current_user
+      flash[:success] = "Quit #{@group.name} successfully."
+      redirect_to @membership.group
+    else
+      flash[:success] = "Removed member successfully."
+      redirect_to group_members_url(@membership.group)
+    end
   end
 
   private
@@ -39,8 +44,9 @@ class MembershipsController < ApplicationController
 
     # Ensures that the only admin of a group cannot quit and leave no group admins.
     def prevent_zero_group_admins
-      @group = Membership.find(params[:id]).group
-      if @group.has_one_admin?
+      @membership = Membership.find(params[:id])
+      @group = @membership.group
+      if @group.has_one_admin? && (@membership.user == current_user)
         flash[:danger] = "You cannot quit unless there are other group admins."
         redirect_to @group
       end

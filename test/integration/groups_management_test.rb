@@ -14,19 +14,6 @@ class GroupsManagementTest < ActionDispatch::IntegrationTest
     @group.promote_to_admin(@user)
   end
 
-  test "index including pagination" do
-    log_in_as(@user)
-    get groups_path
-    assert_template 'groups/index'
-    assert_select 'div.pagination'
-    first_page_of_groups = Group.order(hours: :desc).paginate(page: 1)
-    first_page_of_groups.each do |group|
-      assert_select 'a[href=?]', group_path(group), text: group.name
-      # assert_match group.hours, response.body
-      # assert_match group.users.count, response.body
-    end
-  end
-
   test "group creation" do
     get new_group_url
     assert_redirected_to login_url
@@ -53,26 +40,26 @@ class GroupsManagementTest < ActionDispatch::IntegrationTest
     assert_template 'groups/show'
   end
 
-  test "show page as group admin" do
-    # Setup
+  test "removing members from group" do
+    # Setup for delete
+    member = users(:user_1)
+    member.join(@group)
+    membership = member.membership_for(@group)
     log_in_as(@user)
-    add_n_random_events_to(@group, n: 5)
-    # Page elements
-    get group_path(@group)
-    assert_template 'groups/show'
-    assert_select 'title', @group.name + " | Volunteer Versus"
-    assert_match @group.name, response.body
-    assert_match @group.description, response.body
-    assert_select 'a[href=?]', group_events_path(@group), count: 2
-    assert_select 'a[href=?]', group_members_path(@group)
-    assert_select 'a[href=?]', new_group_event_path(@group), text: "Create event"
-    assert_select 'a[href=?]', edit_group_path(@group), text: "Group settings"
-    assert_select 'form', class: 'edit_membership'
-    @group.events.first(5) do |event|
-      assert_match 'a[href=?]', event_path(event), text: event.name
-      assert_match event.date.strftime("%B %d, %Y"), response.body
-      assert_match event.start_time.strftime("%l:%M %p"), response.body
+    # Deletion
+    get group_members_path(@group)
+    assert_template 'groups/members'
+    assert_select 'a[href=?]', membership_path(membership), text: "Remove"
+    assert_difference '@group.users.count', -1 do
+      delete membership_path(membership)
     end
+    assert_not flash.empty?
+    assert_redirected_to group_members_path(@group)
+    follow_redirect!
+    # Check visually that user is not listed as member
+    assert_select 'a[href=?]', membership_path(membership), count: 0
+    get groups_user_path(member)
+    assert_select 'a[href=?]', group_path(@group), count: 0
   end
 
   test "group edit" do
@@ -95,6 +82,7 @@ class GroupsManagementTest < ActionDispatch::IntegrationTest
     new_desc = "Surprise"
     patch group_path(@group), group: { name: new_name,
                                         description: new_desc }
+    assert_not flash.empty?
     assert_redirected_to @group
     follow_redirect!
     assert_select 'title', new_name + " | Volunteer Versus"
@@ -109,6 +97,7 @@ class GroupsManagementTest < ActionDispatch::IntegrationTest
     assert_template 'groups/edit'
     assert_select 'a[data-method="delete"]'
     delete group_path, group: @group
+    assert_not flash.empty?
     assert_redirected_to groups_url
     follow_redirect!
     # Group should not be listed anymore anywhere.
