@@ -16,8 +16,8 @@ class GroupsDisplayTest < ActionDispatch::IntegrationTest
     first_page_of_groups = Group.order(hours: :desc).paginate(page: 1)
     first_page_of_groups.each do |group|
       assert_select 'a[href=?]', group_path(group), text: group.name
-      # assert_match group.hours, response.body
-      # assert_match group.users.count, response.body
+      assert_match formatted_number(group.hours), response.body
+      assert_match formatted_number(group.users.count), response.body
     end
   end
 
@@ -57,5 +57,26 @@ class GroupsDisplayTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', group_events_path(@group), count: 1
     assert_select 'a[href=?]', event_path(@group.events.first), count: 0
     assert_select 'form', class: 'new_membership'
+  end
+
+  test "members page as group admin" do
+    @group.promote_to_admin(@user)
+    30.times do |n|
+      key = "user_" + n.to_s
+      user = users(key)
+      user.join(@group)
+      user.membership_for(@group).hours = rand(1...100)
+    end
+    get group_members_path(@group)
+    assert_template 'groups/members'
+    @group.users.each do |member|
+      membership = member.membership_for(@group)
+      assert_select 'a[href=?]', user_path(member), text: member.name
+      assert_match formatted_number(member.hours_for_group(@group)), response.body
+      unless member == @user
+        assert_select 'a[href=?]', membership_path(membership), text: "Remove"
+        assert_select 'a[data-method=?]', 'put'
+      end
+    end
   end
 end

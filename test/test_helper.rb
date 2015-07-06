@@ -8,6 +8,7 @@ Minitest::Reporters.use!
 
 
 class ActiveSupport::TestCase
+  include ActionView::Helpers::NumberHelper
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
 
@@ -32,6 +33,7 @@ class ActiveSupport::TestCase
     end
   end
 
+  # Add some random events to a given group.
   def add_n_random_events_to(group, options = { n: 5 })
     options[:n].times do
       name = Faker::Lorem.word
@@ -49,6 +51,11 @@ class ActiveSupport::TestCase
                     description: description,
                     group_id: group.id)
     end
+  end
+
+  # Getting the formatted version that views of the application use for decimal numbers
+  def formatted_number(number)
+    number_with_precision(number, precision: 2, strip_insignificant_zeros: true)
   end
 
   private
