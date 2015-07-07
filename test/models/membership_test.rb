@@ -23,4 +23,10 @@ class MembershipTest < ActiveSupport::TestCase
     assert_not @membership.valid?
   end
 
+  test "membership should be unique" do
+    assert_raise do
+      @membership.user.join(@membership.group)
+    end
+  end
+
 end

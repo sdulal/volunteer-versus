@@ -61,7 +61,7 @@ class GroupsDisplayTest < ActionDispatch::IntegrationTest
 
   test "members page as group admin" do
     @group.promote_to_admin(@user)
-    30.times do |n|
+    5.times do |n|
       key = "user_" + n.to_s
       user = users(key)
       user.join(@group)
@@ -78,5 +78,30 @@ class GroupsDisplayTest < ActionDispatch::IntegrationTest
         assert_select 'a[data-method=?]', 'put'
       end
     end
+  end
+
+  test "members page as non-admin" do
+    5.times do |n|
+      key = "user_" + n.to_s
+      user = users(key)
+      user.join(@group)
+      user.membership_for(@group).hours = rand(1...100)
+    end
+    get group_members_path(@group)
+    assert_template 'groups/members'
+    @group.users.each do |member|
+      membership = member.membership_for(@group)
+      assert_select 'a[href=?]', user_path(member), text: member.name
+      assert_match formatted_number(member.hours_for_group(@group)), response.body
+      assert_select 'a[href=?]', membership_path(membership), count: 0
+      assert_select 'a[data-method=?]', 'put', count: 0
+    end
+  end
+
+  test "members page as non-member" do
+    @user.quit(@group)
+    get group_members_path(@group)
+    assert_not flash.empty?
+    assert_redirected_to @group
   end
 end
