@@ -15,9 +15,6 @@ class GroupsManagementTest < ActionDispatch::IntegrationTest
     log_in_as(@user)
     get new_group_url
     assert_template 'groups/new'
-    # Proper form elements on page
-    assert_select '[name=?]', "group[name]"
-    assert_select '[name=?]', "group[description]"
     # Invalid
     assert_no_difference 'Group.count' do
       post groups_path, group: { name: "",

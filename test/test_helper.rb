@@ -58,6 +58,16 @@ class ActiveSupport::TestCase
     number_with_precision(number, precision: 2, strip_insignificant_zeros: true)
   end
 
+  # Getting the formatted version that views of the application use for days
+  def formatted_day(date)
+    date.strftime("%B %d, %Y")
+  end
+
+  # Getting the formatted version that views of the application use for times
+  def formatted_time(time)
+    time.strftime("%l:%M %p")
+  end
+
   private
 
     # Returns true inside an integration test.

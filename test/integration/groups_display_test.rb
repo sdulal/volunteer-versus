@@ -104,4 +104,26 @@ class GroupsDisplayTest < ActionDispatch::IntegrationTest
     assert_not flash.empty?
     assert_redirected_to @group
   end
+
+  test "edit page as admin" do
+    @group.promote_to_admin(@user)
+    get edit_group_path(@group)
+    assert_template 'groups/edit'
+    assert_select '[name=?]', "group[name]"
+    assert_select '[name=?]', "group[description]"
+    assert_select 'a[data-method=delete]'
+  end
+
+  test "edit page as non-admin" do
+    # Non-member
+    @user.quit(@group)
+    get edit_group_path(@group)
+    assert_not flash.empty?
+    assert_redirected_to @group
+    # Regular member
+    @user.join(@group)
+    get edit_group_path(@group)
+    assert_not flash.empty?
+    assert_redirected_to @group
+  end
 end
