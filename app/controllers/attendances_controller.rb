@@ -53,7 +53,7 @@ class AttendancesController < ApplicationController
 
     # Checks that the current user is in the group of the event
     def member_user
-      if params[:event_id]   
+      if params[:event_id]
         @group = Event.find(params[:event_id]).group
       else
         @group = Attendance.find(params[:id]).group
@@ -66,7 +66,7 @@ class AttendancesController < ApplicationController
       @attendance = Attendance.find(by_id)
       unless @attendance.group.has_admin?(current_user)
         flash[:danger] = "You must be an admin of the group."
-        redirect_to @attendance.event 
+        redirect_to @attendance.event
       end
     end
 
