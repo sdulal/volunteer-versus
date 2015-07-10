@@ -44,13 +44,13 @@ class EventsControllerTest < ActionController::TestCase
     assert_no_difference 'Event.count' do
       delete :destroy, id: @event.id
     end
-    assert_redirected_to @group
+    assert_redirected_to @event
     # Log in as non-admin member
     @non_admin.join(@group)
     assert_no_difference 'Event.count' do
       delete :destroy, id: @event.id
     end
-    assert_redirected_to @group
+    assert_redirected_to @event
   end
 
   test "should redirect everything if not logged in" do

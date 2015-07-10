@@ -5,6 +5,8 @@ class EventsDisplayTest < ActionDispatch::IntegrationTest
   def setup
     @user = users(:generic_user)
     @group = groups(:generic_group)
+    add_n_random_events_to(@group, n: 1)
+    @event = @group.events.first
     @user.join(@group)
     log_in_as(@user)
   end
@@ -25,9 +27,6 @@ class EventsDisplayTest < ActionDispatch::IntegrationTest
   end
 
   test "show as admin" do
-    # Event specific setup
-    add_n_random_events_to(@group, n: 1)
-    @event = @group.events.first
     @group.promote_to_admin(@user)
     # Event hasn't passed yet
     @event.update_attributes(date: Date.tomorrow)
@@ -49,10 +48,20 @@ class EventsDisplayTest < ActionDispatch::IntegrationTest
                                 text: "Check attendances", count: 1
   end
 
+  test "show as non-admin" do
+    # Event hasn't passed yet
+    @event.update_attributes(date: Date.tomorrow)
+    get event_path(@event)
+    assert_template 'events/show'
+    assert_select 'a[href=?]', edit_event_path(@event), count: 0
+    # Event has passed
+    @event.update_attributes(date: Date.yesterday)
+    get event_path(@event)
+    assert_select 'a[href=?]', event_attendances_path(@event),
+                                text: "Check attendances", count: 0
+  end
+
   test "users view on show page including pagination" do
-    # Event specific setup
-    add_n_random_events_to(@group, n: 1)
-    @event = @group.events.first
     @user.attend(@event)
     30.times do |n|
       user = users("user_" + n.to_s)
@@ -66,5 +75,15 @@ class EventsDisplayTest < ActionDispatch::IntegrationTest
     first_page_of_attendees.each do |attendee|
       assert_select 'a[href=?]', user_path(attendee), attendee.name
     end
+  end
+
+  test "edit page" do
+    # Must be an admin to access the page.
+    get edit_event_path(@event)
+    assert_not flash.empty?
+    assert_redirected_to @event
+    @group.promote_to_admin(@user)
+    get edit_event_path(@event)
+    assert_template 'events/edit'
   end
 end

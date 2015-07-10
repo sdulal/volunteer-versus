@@ -71,11 +71,20 @@ class EventsController < ApplicationController
     end
 
     def admin_user
-      if (params[:group_id])
+      new_or_create = !!params[:group_id]
+      if new_or_create
         @group = Group.find(params[:group_id])
       else
-        @group = Event.find(by_id).group
+        @event = Event.find(by_id)
+        @group = @event.group
       end
-      redirect_to @group unless @group.has_admin?(current_user)
+      unless @group.has_admin?(current_user)
+        flash[:danger] = "The page you requested is only available to admins."
+        if new_or_create
+          redirect_to @group
+        else
+          redirect_to @event
+        end
+      end
     end
 end
