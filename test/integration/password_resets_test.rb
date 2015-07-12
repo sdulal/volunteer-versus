@@ -2,7 +2,6 @@ require 'test_helper'
 
 class PasswordResetsTest < ActionDispatch::IntegrationTest
 
-  # The views have not been build for password resets yet.
   def setup
     ActionMailer::Base.deliveries.clear
     @user = users(:chris)
