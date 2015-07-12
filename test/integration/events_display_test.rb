@@ -26,6 +26,23 @@ class EventsDisplayTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "new page" do
+    get new_group_event_path(@group)
+    assert_not flash.empty?
+    assert_redirected_to @group
+    @group.promote_to_admin(@user)
+    get new_group_event_path(@group)
+    assert_template 'events/new'
+    # Checking that the partial has certain fields
+    assert_template partial: 'events/_fields'
+    assert_select '[name=?]', 'event[name]'
+    assert_select 'label[for=?]', 'event_date'
+    assert_select 'label[for=?]', 'event_start_time'
+    assert_select 'label[for=?]', 'event_end_time'
+    assert_select '[name=?]', 'event[location]'
+    assert_select '[name=?]', 'event[description]'
+  end
+
   test "show as admin" do
     @group.promote_to_admin(@user)
     # Event hasn't passed yet
@@ -85,5 +102,6 @@ class EventsDisplayTest < ActionDispatch::IntegrationTest
     @group.promote_to_admin(@user)
     get edit_event_path(@event)
     assert_template 'events/edit'
+    assert_template partial: 'events/_fields'
   end
 end
