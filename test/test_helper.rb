@@ -34,8 +34,8 @@ class ActiveSupport::TestCase
   end
 
   # Add some random events to a given group.
-  def add_n_random_events_to(group, options = { n: 5 })
-    options[:n].times do
+  def add_n_random_events_to(group, n)
+    n.times do
       name = Faker::Lorem.word
       date = Faker::Date.between(2.days.ago, Date.today + 2.days)
       start_time = Faker::Time.between(2.days.ago, Time.now, :morning)

@@ -5,7 +5,7 @@ class MembershipsInterfaceTest < ActionDispatch::IntegrationTest
   def setup
     @user = users(:generic_user)
     @group = groups(:generic_group)
-    add_n_random_events_to(@group, n: 5)
+    add_n_random_events_to(@group, 5)
     @event = @group.events.first
   end
 

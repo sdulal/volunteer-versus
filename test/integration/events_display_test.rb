@@ -5,14 +5,14 @@ class EventsDisplayTest < ActionDispatch::IntegrationTest
   def setup
     @user = users(:generic_user)
     @group = groups(:generic_group)
-    add_n_random_events_to(@group, n: 1)
+    add_n_random_events_to(@group, 1)
     @event = @group.events.first
     @user.join(@group)
     log_in_as(@user)
   end
 
   test "index including pagination" do
-    add_n_random_events_to(@group, n: 40)
+    add_n_random_events_to(@group, 40)
     get group_events_path(@group)
     assert_template 'events/index'
     assert_select 'div.pagination'
@@ -59,7 +59,7 @@ class EventsDisplayTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', event_attendances_path(@event),
                                 text: "Join event"
     # Event has passed
-    @event.update_attributes(date: Date.yesterday)
+    @event.update_attributes(date: 1.week.ago)
     get event_path(@event)
     assert_select 'a[href=?]', event_attendances_path(@event),
                                 text: "Check attendances", count: 1

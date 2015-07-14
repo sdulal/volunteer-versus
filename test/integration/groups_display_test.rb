@@ -24,7 +24,7 @@ class GroupsDisplayTest < ActionDispatch::IntegrationTest
   test "show page as group admin" do
     # Setup
     @group.promote_to_admin(@user)
-    add_n_random_events_to(@group, n: 5)
+    add_n_random_events_to(@group, 5)
     # Page elements
     get group_path(@group)
     assert_template 'groups/show'
@@ -52,7 +52,7 @@ class GroupsDisplayTest < ActionDispatch::IntegrationTest
 
   test "show page as non-member" do
     @user.quit(@group)
-    add_n_random_events_to(@group, n: 5)
+    add_n_random_events_to(@group, 5)
     get group_path(@group)
     assert_select 'a[href=?]', group_events_path(@group), count: 1
     assert_select 'a[href=?]', event_path(@group.events.first), count: 0
