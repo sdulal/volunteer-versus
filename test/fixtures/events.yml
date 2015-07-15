@@ -4,7 +4,7 @@ festival:
   name: The Festival
   date: 2015-06-09
   start_time: 2015-06-09 17:03:58
-  end_time: 2015-06-09 17:03:58
+  end_time: 2015-06-09 18:03:58
   location: Great Gardens
   description: At this festival we will be assisting people with stuff.
   group_id: 1
@@ -13,7 +13,7 @@ kitchen:
   name: Soup Kitchen 2015
   date: 2015-06-11
   start_time: 2015-06-10 17:05:00
-  end_time: 2015-06-10 17:05:00
+  end_time: 2015-06-10 18:05:00
   location: West SJ
   description: Kitchen duties.
   group: circle

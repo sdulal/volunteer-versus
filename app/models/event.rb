@@ -30,6 +30,9 @@ class Event < ActiveRecord::Base
 
     # Validates that the event starts before it ends.
     def start_before_end
+      if start_time == end_time
+        errors.add(:end_time, "cannot be the same as start time")
+      end
       if start_time > end_time
         errors.add(:start_time, "cannot be after end time")
       end
