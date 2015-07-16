@@ -54,6 +54,27 @@ class MembershipsInterfaceTest < ActionDispatch::IntegrationTest
     follow_redirect!
   end
 
+  test "joining group with Ajax" do
+    log_in_as(@user)
+    get group_path(@group)
+    assert_template partial: 'groups/_join'
+    assert_difference '@user.groups.count', 1 do
+      xhr :post, memberships_path, group_id: @group.id
+    end
+    assert_template partial: 'groups/_quit'
+  end
+
+  test "quitting group with Ajax" do
+    log_in_as(@user)
+    @user.join(@group)
+    get group_path(@group)
+    assert_template partial: 'groups/_quit'
+    assert_difference '@user.groups.count', -1 do
+      xhr :delete, membership_path(@user.membership_for(@group))
+    end
+    assert_template partial: 'groups/_join'
+  end
+
   test "accessing events in group" do
     # No log in
     get event_path(@event)

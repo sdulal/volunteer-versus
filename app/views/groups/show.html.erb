@@ -71,11 +71,13 @@
         <%= link_to "Create event", new_group_event_path(@group), class: "btn btn-primary" %>
         <%= link_to "Group settings", edit_group_path(@group), class: "btn btn-primary" %>
       <% end %>
-      <% if @group.has_member?(current_user) %>
-        <%= render 'quit' %>
-      <% else %>
-        <%= render 'join' %>
+      <div class="membership-button">
+        <% if @group.has_member?(current_user) %>
+          <%= render 'quit' %>
+        <% else %>
+          <%= render 'join' %>
       <% end %>
+      </div>
     </div>
   </div>
 </div>

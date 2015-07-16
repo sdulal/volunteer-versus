@@ -6,8 +6,13 @@ class MembershipsController < ApplicationController
   def create
     @group = Group.find(params[:group_id])
     current_user.join(@group)
-    flash[:success] = "Joined #{@group.name} successfully!"
-    redirect_to @group
+    respond_to do |format|
+      format.html {
+        flash[:success] = "Joined #{@group.name} successfully!"
+        redirect_to @group
+      }
+      format.js
+    end
   end
 
   def update
@@ -19,14 +24,20 @@ class MembershipsController < ApplicationController
   end
 
   def destroy
-    @membership = Membership.find(params[:id])
-    @membership.destroy
-    if @membership.user == current_user
-      flash[:success] = "Quit #{@group.name} successfully."
-      redirect_to @membership.group
-    else
-      flash[:success] = "Removed member successfully."
-      redirect_to group_members_url(@membership.group)
+    @user = Membership.find(params[:id]).user
+    @group = Membership.find(params[:id]).group
+    @user.quit(@group)
+    respond_to do |format|
+      format.html {
+        if @user == current_user
+          flash[:success] = "Quit #{@group.name} successfully."
+          redirect_to @membership.group
+        else
+          flash[:success] = "Removed member successfully."
+          redirect_to group_members_url(@group)
+        end
+      }
+      format.js
     end
   end
 
