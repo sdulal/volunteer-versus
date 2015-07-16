@@ -18,7 +18,7 @@ class Event < ActiveRecord::Base
   end
 
   def has_attendee?(attendee)
-    attendees.exists?(attendee.id)
+    !attendee.attendance_for(self).nil?
   end
 
   def ended?

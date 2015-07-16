@@ -89,6 +89,11 @@ class User < ActiveRecord::Base
     attendances.create(event: event)
   end
 
+  # Leave an event.
+  def leave(event)
+    attendances.find_by(event: event).destroy
+  end
+
   # Returns true if the user is the admin of some group.
   def admin_of?(group)
     memberships.exists?(group_id: group.id, admin: true)

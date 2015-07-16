@@ -1,7 +1,9 @@
 <div class="attendance-actions">
-  <% if !@event.has_attendee?(current_user) %>
-    <%= link_to 'Join event', event_attendances_path(@event), method: :post, class: "btn btn-primary centered" %>
-  <% else %>
-    <%= link_to 'Quit event', current_user_attendance(@event), method: :delete, class: "btn btn-danger centered" %>
-  <% end %>
+  <div id="attendance-form">
+    <% if !@event.has_attendee?(current_user) %>
+      <%= render 'attend' %>
+    <% else %>
+      <%= render 'leave' %>
+    <% end %>
+  </div>
 </div>
