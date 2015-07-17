@@ -16,7 +16,7 @@ class UsersProfileTest < ActionDispatch::IntegrationTest
     @user.last_n_events(5).each do |event|
       assert_match event.name, response.body
       assert_match event.group.name, response.body
-      assert_match event.date.strftime("%B %d, %Y"), response.body
+      assert_match formatted_day(event.date), response.body
     end
   end
 end
