@@ -7,7 +7,7 @@ festival:
   end_time: 2015-06-09 18:03:58
   location: Great Gardens
   description: At this festival we will be assisting people with stuff.
-  group_id: 1
+  group: circle
 
 kitchen:
   name: Soup Kitchen 2015

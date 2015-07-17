@@ -1,4 +1,5 @@
 class Event < ActiveRecord::Base
+  after_update :update_attendances
   belongs_to :group
   has_many :attendances, dependent: :destroy
   has_many :attendees, through: :attendances
@@ -27,6 +28,25 @@ class Event < ActiveRecord::Base
   end
 
   private
+
+    def update_attendances
+      if date_changed? || start_time_changed? || end_time_changed?
+        remove_checks = false
+        new_date = changes[:date] ? changes[:date].second : date
+        new_start = changes[:start_time] ? changes[:start_time].second : start_time
+        new_end = changes[:end_time] ? changes[:end_time].second : end_time
+        if new_date.future?
+          remove_checks = true
+        elsif new_end.future? && (new_date == Date.today)
+          remove_checks = true
+        end
+        attendances.each do |attendance|
+          new_checked = remove_checks ? false : attendance.checked
+          attendance.update_attributes(went: new_start, left: new_end,
+                                        checked: new_checked)
+        end
+      end
+    end
 
     # Validates that the event starts before it ends.
     def start_before_end
