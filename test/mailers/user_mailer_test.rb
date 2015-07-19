@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class UserMailerTest < ActionMailer::TestCase
-  # The views have not been built for mailer yet.
+
   test "account_activation" do
     user = users(:nick)
     user.activation_token = User.new_token
