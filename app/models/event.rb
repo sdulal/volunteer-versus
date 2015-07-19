@@ -1,9 +1,9 @@
 class Event < ActiveRecord::Base
-  after_update :update_attendances
   belongs_to :group
   has_many :attendances, dependent: :destroy
   has_many :attendees, through: :attendances
   default_scope -> { order(date: :desc) }
+  before_save :update_attendances, unless: "attendances.empty?"
   validates :name, presence: true
   validates :date, presence: true
   validates :location, presence: true
@@ -35,9 +35,10 @@ class Event < ActiveRecord::Base
         new_date = changes[:date] ? changes[:date].second : date
         new_start = changes[:start_time] ? changes[:start_time].second : start_time
         new_end = changes[:end_time] ? changes[:end_time].second : end_time
-        if new_date.future?
-          remove_checks = true
-        elsif new_end.future? && (new_date == Date.today)
+        new_datetime = DateTime.new(new_date.year, new_date.month, new_date.day,
+                                    new_end.hour, new_end.min, new_end.sec,
+                                    new_end.zone)
+        if new_datetime.future?
           remove_checks = true
         end
         attendances.each do |attendance|
