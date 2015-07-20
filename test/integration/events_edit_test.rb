@@ -7,8 +7,7 @@ class EventsEditTest < ActionDispatch::IntegrationTest
     @group = groups(:generic_group)
     add_n_random_events_to(@group, 1)
     @event = @group.events.first
-    @user.join(@group)
-    @group.promote_to_admin(@user)
+    install_user_as_group_admin(@user, @group)
     log_in_as(@user)
   end
 

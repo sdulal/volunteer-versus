@@ -22,8 +22,7 @@ class Event < ActiveRecord::Base
   end
 
   def ended?
-    (Date.today > date) || (Date.today == date &&
-                            Time.now.hour >= end_time.hour)
+    date.past? || (date.today? && (Time.now.hour >= end_time.hour))
   end
 
   private

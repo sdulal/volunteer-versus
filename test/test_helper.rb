@@ -65,6 +65,12 @@ class ActiveSupport::TestCase
     time.strftime("%l:%M %p")
   end
 
+  # Quickly bring in a user as an admin of a group.
+  def install_user_as_group_admin(user, group)
+    user.join(group) unless group.has_member?(user)
+    group.promote_to_admin(user) unless group.has_admin?(user)
+  end
+
   private
 
     # Returns true inside an integration test.
