@@ -5,8 +5,7 @@ class MembershipsInterfaceTest < ActionDispatch::IntegrationTest
   def setup
     @user = users(:generic_user)
     @group = groups(:generic_group)
-    add_n_random_events_to(@group, 5)
-    @event = @group.events.first
+    @event = add_n_random_events_to(@group, 5)
   end
 
   test "joining and quitting group with view changes" do

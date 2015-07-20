@@ -5,8 +5,7 @@ class EventsEditTest < ActionDispatch::IntegrationTest
   def setup
     @user = users(:generic_user)
     @group = groups(:generic_group)
-    add_n_random_events_to(@group, 1)
-    @event = @group.events.first
+    @event = add_n_random_events_to(@group, 1)
     install_user_as_group_admin(@user, @group)
     log_in_as(@user)
   end

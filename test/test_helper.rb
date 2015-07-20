@@ -31,6 +31,7 @@ class ActiveSupport::TestCase
   end
 
   # Add some random events to a given group.
+  # Returns the first event for convenience.
   def add_n_random_events_to(group, n)
     n.times do
       name = Faker::Lorem.word
@@ -48,19 +49,20 @@ class ActiveSupport::TestCase
                     description: description,
                     group_id: group.id)
     end
+    group.events.first
   end
 
-  # Getting the formatted version that views of the application use for decimal numbers
+  # Getting the formatted version that views of the application use for decimal numbers.
   def formatted_number(number)
     number_with_precision(number, precision: 2, strip_insignificant_zeros: true)
   end
 
-  # Getting the formatted version that views of the application use for days
+  # Getting the formatted version that views of the application use for days.
   def formatted_day(date)
     date.strftime("%B %d, %Y")
   end
 
-  # Getting the formatted version that views of the application use for times
+  # Getting the formatted version that views of the application use for times.
   def formatted_time(time)
     time.strftime("%l:%M %p")
   end

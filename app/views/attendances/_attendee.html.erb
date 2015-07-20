@@ -9,12 +9,13 @@
   </div>
   <% if show_admin_tools %>
     <div class="admin-member-actions">
+      <% attendance = attendee.attendance_for(@event) %>
       <% if attendee.got_checked_for?(@event) %>
-        <%= link_to "Uncheck off", attendance_path( attendee.attendance_for(@event), attendance: { checked: false }), method: :put %>
+        <%= link_to "Uncheck off", uncheck_path_for(attendance), method: :put %>
       <% else %>
-        <%= link_to "Check off", attendance_path( attendee.attendance_for(@event), attendance: { checked: true }), method: :put %>
+        <%= link_to "Check off", check_path_for(attendance), method: :put %>
       <% end %>
-      <%= link_to "Advanced edit", edit_attendance_path(attendee.attendance_for(@event)) %>
+      <%= link_to "Advanced edit", edit_attendance_path(attendance) %>
     </div>
   <% end %>
 </li>
