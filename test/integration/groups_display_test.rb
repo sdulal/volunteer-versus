@@ -39,8 +39,8 @@ class GroupsDisplayTest < ActionDispatch::IntegrationTest
     assert_select 'form', class: 'edit_membership'
     @group.events.first(5) do |event|
       assert_match 'a[href=?]', event_path(event), text: event.name
-      assert_match event.date.strftime("%B %d, %Y"), response.body
-      assert_match event.start_time.strftime("%l:%M %p"), response.body
+      assert_match formatted_day(event.date), response.body
+      assert_match formatted_time(event.start_time), response.body
     end
   end
 

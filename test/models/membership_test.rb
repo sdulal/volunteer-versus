@@ -1,10 +1,6 @@
 require 'test_helper'
 
 class MembershipTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
-
   def setup
     @membership = memberships(:one)
   end
@@ -28,5 +24,4 @@ class MembershipTest < ActiveSupport::TestCase
       @membership.user.join(@membership.group)
     end
   end
-
 end

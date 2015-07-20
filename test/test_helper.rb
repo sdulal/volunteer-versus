@@ -12,9 +12,6 @@ class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
 
-  # Note that application helpers are not available in tests.
-  # So, add test helper methods here...
-
   # Returns true if a test user is logged in.
   def is_logged_in?
     !session[:user_id].nil?
@@ -66,6 +63,12 @@ class ActiveSupport::TestCase
   # Getting the formatted version that views of the application use for times
   def formatted_time(time)
     time.strftime("%l:%M %p")
+  end
+
+  # Quickly bring in a user as an admin of a group.
+  def install_user_as_group_admin(user, group)
+    user.join(group) unless group.has_member?(user)
+    group.promote_to_admin(user) unless group.has_admin?(user)
   end
 
   private

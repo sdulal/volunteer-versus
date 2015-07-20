@@ -5,8 +5,7 @@ class GroupsManagementTest < ActionDispatch::IntegrationTest
   def setup
     @user = users(:generic_user)
     @group = groups(:generic_group)
-    @user.join(@group)
-    @group.promote_to_admin(@user)
+    install_user_as_group_admin(@user, @group)
   end
 
   test "group creation" do

@@ -31,14 +31,14 @@ class MembershipsInterfaceTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', group_events_path(@group), count: 2
     @group.events.first(5).each do |event|
       assert_select 'a[href=?]', event_path(event), text: event.name
-      assert_match event.date.strftime("%B %d, %Y"), response.body
-      assert_match event.start_time.strftime("%l:%M %p"), response.body
+      assert_match formatted_day(event.date), response.body
+      assert_match formatted_time(event.start_time), response.body
     end
     # Check that the user is listed on the members' page
     get group_members_path(@group)
     assert_select 'a[href=?]', user_path(@user), text: @user.name
-    assert_match @user.membership_for(@group)
-                      .created_at.strftime("%B %d, %Y"), response.body
+    assert_match formatted_day(@user.membership_for(@group)
+                      .created_at), response.body
     # See that the group shows up in user profile
     get groups_user_path(@user)
     assert_template 'users/groups'
