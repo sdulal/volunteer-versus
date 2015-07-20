@@ -23,7 +23,13 @@ class Event < ActiveRecord::Base
   end
 
   def ended?
-    date.past? || (date.today? && (Time.now.hour >= end_time.hour))
+    date.past? || (date.today? &&
+      (Time.now.seconds_since_midnight > end_time.seconds_since_midnight))
+  end
+
+  def not_ended?
+    date.future? || (date.today? &&
+      (Time.now.seconds_since_midnight < end_time.seconds_since_midnight))
   end
 
   private
@@ -34,10 +40,7 @@ class Event < ActiveRecord::Base
         new_date = changes[:date] ? changes[:date].second : date
         new_start = changes[:start_time] ? changes[:start_time].second : start_time
         new_end = changes[:end_time] ? changes[:end_time].second : end_time
-        new_datetime = DateTime.new(new_date.year, new_date.month, new_date.day,
-                                    new_end.hour, new_end.min, new_end.sec,
-                                    new_end.zone)
-        if new_datetime.future?
+        if not_ended?
           remove_checks = true
         end
         attendances.each do |attendance|
