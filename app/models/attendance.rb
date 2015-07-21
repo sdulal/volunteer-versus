@@ -62,8 +62,11 @@ class Attendance < ActiveRecord::Base
     def uncredit_hours
       old_attendee_hours = self.attendee.hours
       old_group_hours = self.group.hours
+      membership = related_membership
+      old_membership_hours = membership.hours
       attendee.update_attributes(hours: (old_attendee_hours - hours))
       group.update_attributes(hours: (old_group_hours - hours))
+      membership.update_attributes(hours: (old_membership_hours - hours))
     end
 
     def check_after_event

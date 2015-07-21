@@ -48,4 +48,21 @@ class EventTest < ActiveSupport::TestCase
     @event.start_time = @event.end_time + 1.day
     assert_not @event.valid?
   end
+
+  test "changing date/time info should affect attendances" do
+    5.times do |n|
+      key = "user_" + n.to_s
+      user = users(key)
+      user.join(@event.group)
+      user.attend(@event)
+      user.attendance_for(@event).update_attributes(checked: true)
+    end
+    @event.update_attributes(date: Date.today,
+                              start_time: Time.now,
+                              end_time: Time.now + 1.hour)
+    @event.attendances.each do |attendance|
+      assert_equal 0, attendance.attendee.hours.round(2)
+      assert_not attendance.checked
+    end
+  end
 end
