@@ -61,6 +61,7 @@ class EventTest < ActiveSupport::TestCase
                               start_time: Time.now,
                               end_time: Time.now + 1.hour)
     @event.attendances.each do |attendance|
+      assert_equal 0, attendance.attendee.hours.round(2)
       assert_not attendance.checked
     end
   end

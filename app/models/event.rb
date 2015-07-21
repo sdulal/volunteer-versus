@@ -38,7 +38,8 @@ class Event < ActiveRecord::Base
       if date_changed? || start_time_changed? || end_time_changed?
         remove_checks = false
         new_date = changes[:date] ? changes[:date].second : date
-        new_start = changes[:start_time] ? changes[:start_time].second : start_time
+        new_start = changes[:start_time] ?
+                    changes[:start_time].second : start_time
         new_end = changes[:end_time] ? changes[:end_time].second : end_time
         if not_ended?
           remove_checks = true
