@@ -19,6 +19,12 @@ class AttendanceTest < ActiveSupport::TestCase
     assert_not @attendance.valid?
   end
 
+  test "attendance should be unique" do
+    assert_raise do
+      @attendance.attendee.attend(@attendance.event)
+    end
+  end
+
   test "checked cannot be true until after event" do
     # Preliminary
     @future = attendances(:will_attend)
