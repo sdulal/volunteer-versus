@@ -7,8 +7,8 @@ class EventsAttendancesEditTest < ActionDispatch::IntegrationTest
     @group = groups(:generic_group)
     add_n_random_events_to(@group, 1)
     @event = @group.events.first
-    @event.update_attributes(date: Date.yesterday, start_time: Time.now,
-                                                    end_time: Time.now + 1.hour)
+    @event.update_attributes(date: Date.yesterday, start_time: Time.now - 2.hour,
+                                                    end_time: Time.now - 1.hour)
     install_user_as_group_admin(@user, @group)
     log_in_as(@user)
   end
@@ -21,6 +21,7 @@ class EventsAttendancesEditTest < ActionDispatch::IntegrationTest
       user.attend(@event)
       user.attendance_for(@event).update_attributes(checked: true)
     end
+    assert_equal 5, User.sum(:hours).round(2)
     # Changing to a future date should wipe out checks and hours
     new_name = "Attendance killer"
     new_date = Date.today
@@ -28,7 +29,7 @@ class EventsAttendancesEditTest < ActionDispatch::IntegrationTest
     new_end = Time.now + 1.hour
     new_location = "Here"
     new_desc = "No attendances should be checked for this event."
-    assert_difference 'User.sum(:hours)', -5 do
+    assert_difference 'User.sum(:hours).round(2)', -5 do
       patch_via_redirect event_path(@event), event: { name: new_name,
                                                       date: new_date,
                                                       start_time: new_start,
