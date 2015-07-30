@@ -13,20 +13,23 @@ class Event < ActiveRecord::Base
   validate :start_before_end, unless: ["start_time.nil?", "end_time.nil?"]
   attr_accessor :hours
 
-
+  # Calculate length of event in hours.
   def hours
     (end_time - start_time) / 1.hours
   end
 
+  # Check if someone is attending event.
   def has_attendee?(attendee)
     attendees.exists?(attendee.id)
   end
 
+  # Check if event ended.
   def ended?
     date.past? || (date.today? &&
       (Time.now.seconds_since_midnight > end_time.seconds_since_midnight))
   end
 
+  # Check if event has not ended.
   def not_ended?
     date.future? || (date.today? &&
       (Time.now.seconds_since_midnight < end_time.seconds_since_midnight))
@@ -34,6 +37,7 @@ class Event < ActiveRecord::Base
 
   private
 
+    # Update attendances when the date/start/end info changes.
     def update_attendances
       if date_changed? || start_time_changed? || end_time_changed?
         remove_checks = false

@@ -12,21 +12,26 @@ class Attendance < ActiveRecord::Base
   validate :went_before_left
   validate :event_bounds_times, unless: ["event.nil?"]
 
+  # Calculate length of attendance.
   def hours
     (left - went) / 1.hour
   end
 
+  # Get the associated membership model.
   def related_membership
     attendee.membership_for(group)
   end
 
   private
 
+    # Let attendance initially span event length.
     def assign_default_times
       self.went ||= self.event.start_time
       self.left ||= self.event.end_time
     end
 
+
+    # Give the user, group and membership hours.
     def credit_hours
       old_attendee_hours = self.attendee.hours
       old_group_hours = self.group.hours
@@ -43,6 +48,7 @@ class Attendance < ActiveRecord::Base
       end
     end
 
+    # Change hours if times change.
     def change_credit
       if (went_changed? || left_changed?) && (checked? && !checked_changed?)
         old_went = went_changed? ? went_change.first : went
@@ -59,6 +65,7 @@ class Attendance < ActiveRecord::Base
       end
     end
 
+    # Remove any hours if attendance is destroyed.
     def uncredit_hours
       old_attendee_hours = self.attendee.hours
       old_group_hours = self.group.hours
@@ -69,18 +76,21 @@ class Attendance < ActiveRecord::Base
       membership.update_attributes(hours: (old_membership_hours - hours))
     end
 
+    # Attendances should be checked only after event ends.
     def check_after_event
       unless event.ended?
         errors.add(:checked, "cannot be done until after event has ended")
       end
     end
 
+    # Attendance cannot end before it begins.
     def went_before_left
       unless hours > 0
         errors.add(:went, "must be before left")
       end
     end
 
+    # Attendance has to fall within event times.
     def event_bounds_times
       unless went.between?(event.start_time, event.end_time)
         errors.add(:went, "must be within event times")
