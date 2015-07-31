@@ -20,7 +20,7 @@ class Event < ActiveRecord::Base
 
   # Check if someone is attending event.
   def has_attendee?(attendee)
-    attendees.exists?(attendee.id)
+    !attendee.attendance_for(self).nil?
   end
 
   # Check if event ended.

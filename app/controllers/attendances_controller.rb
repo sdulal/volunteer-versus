@@ -15,10 +15,12 @@ class AttendancesController < ApplicationController
 
   # Carrying out join event.
   def create
-    @attendance = Attendance.new(attendee: current_user, event_id: params[:event_id])
-    @attendance.save
-    flash[:success] = "Joined event."
-    redirect_to event_url(params[:event_id])
+    @event = Event.find(params[:event_id])
+    current_user.attend(@event)
+    respond_to do |format|
+      format.html { redirect_to @event }
+      format.js
+    end
   end
 
   # A tool that only group admins will use
@@ -40,9 +42,11 @@ class AttendancesController < ApplicationController
   # Quit event.
   def destroy
     @event = Attendance.find(by_id).event
-    Attendance.find(by_id).destroy
-    flash[:success] = "Quit event."
-    redirect_to group_events_url(@event.group)
+    current_user.leave(@event)
+    respond_to do |format|
+      format.html { redirect_to group_events_url(@event.group) }
+      format.js
+    end
   end
 
   private

@@ -45,11 +45,31 @@ class EventsActionTest < ActionDispatch::IntegrationTest
     assert_redirected_to @event
   end
 
-  test "quit an event the standard way" do
+  test "leave an event the standard way" do
     @user.attend(@event)
     assert_difference ['@user.events.count', '@event.attendees.count'], -1 do
       delete attendance_path(@user.attendance_for(@event))
     end
     assert_redirected_to group_events_url(@event.group)
+  end
+
+  test "attend an event with Ajax" do
+    get event_path(@event)
+    assert_template partial: 'events/_attend'
+    assert_difference ['@user.events.count', '@event.attendees.count'], 1 do
+      xhr :post, event_attendances_path(@event), attendee: @user
+    end
+    assert_template partial: 'events/_leave'
+  end
+
+  test "leave an event with Ajax" do
+    @user.attend(@event)
+    get event_path(@event)
+    assert_template partial: 'events/_leave'
+    assert_difference ['@user.events.count', '@event.attendees.count'], -1 do
+      xhr :delete, attendance_path(@user.attendance_for(@event)),
+                    attendee: @user
+    end
+    assert_template partial: 'events/_attend'
   end
 end
