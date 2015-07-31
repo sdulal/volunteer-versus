@@ -1,5 +1,6 @@
-<%= form_for(current_user.memberships.find_by(group_id: @group.id),
-              html: { method: :delete },
-              remote: true ) do |f| %>
-  <%= f.submit "Quit", class: "btn btn-danger", data: { confirm: "Are you sure?" } %>
-<% end %>
+<div class="membership-button">
+  <%= form_for(current_user.memberships.find_by(group_id: @group.id),
+                html: { method: :delete }) do |f| %>
+    <%= f.submit "Quit", class: "btn btn-danger", data: { confirm: "Are you sure?" } %>
+  <% end %>
+</div>
