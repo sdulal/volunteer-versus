@@ -25,6 +25,13 @@ class AttendanceTest < ActiveSupport::TestCase
     end
   end
 
+  test "attendance time should span event time by default" do
+    @event = @attendance.event
+    assert_equal @event.hours, @attendance.hours
+    assert_equal @event.start_time, @attendance.went
+    assert_equal @event.end_time, @attendance.left
+  end
+
   test "checked cannot be true until after event" do
     # Preliminary
     @future = attendances(:will_attend)
