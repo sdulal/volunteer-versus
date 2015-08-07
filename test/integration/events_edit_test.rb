@@ -20,6 +20,13 @@ class EventsEditTest < ActionDispatch::IntegrationTest
                                         location: "",
                                         description: "Stuff" }
     assert_template 'events/edit'
+    patch event_path(@event), event: { name: "Zero Time",
+                                        date: Date.today,
+                                        start_time: Time.now,
+                                        end_time: Time.now,
+                                        location: "Nowhere",
+                                        description: "Bad" }
+    assert_template 'events/edit'
   end
 
   test "valid event edit" do
