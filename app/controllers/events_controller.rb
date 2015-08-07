@@ -59,11 +59,7 @@ class EventsController < ApplicationController
     end
 
     def member_of_related_group
-      if params[:event_id]
-        @event = Event.find(params[:event_id])
-      else
-        @event = Event.find(by_id)
-      end
+      @event = Event.find(by_id)
       unless @event.group.has_member?(current_user)
         flash[:danger] = "The page you requested is only available to members."
         redirect_to group_events_url(@event.group)
