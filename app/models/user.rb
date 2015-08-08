@@ -109,11 +109,7 @@ class User < ActiveRecord::Base
   end
 
   def hours_for_group(group)
-    if group.has_member?(self)
-      membership_for(group).hours
-    else
-      0
-    end
+    group.has_member?(self) ? membership_for(group).hours : 0
   end
 
   def got_checked_for?(event)
