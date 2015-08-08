@@ -19,4 +19,16 @@ class UsersProfileTest < ActionDispatch::IntegrationTest
       assert_match formatted_day(event.date), response.body
     end
   end
+
+  test "user's events display" do
+    log_in_as(@user)
+    get events_user_path(@user)
+    assert_template 'users/events'
+    @user.events.each do |event|
+      assert_select 'a[href=?]', event_path(event), text: event.name
+      assert_match event.group.name, response.body
+      assert_match formatted_day(event.date), response.body
+      assert_match event.description, response.body
+    end
+  end
 end
