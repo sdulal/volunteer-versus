@@ -5,6 +5,7 @@ class UsersProfileTest < ActionDispatch::IntegrationTest
 
   def setup
     @user = users(:nick)
+    log_in_as(@user)
   end
 
   test "profile display" do
@@ -20,8 +21,23 @@ class UsersProfileTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "user's groups display" do
+    long_desc_group = groups(:generic_group)
+    long_desc_group.update_attributes(description: "l" * 141)
+    @user.join(long_desc_group)
+    get groups_user_path(@user)
+    assert_template 'users/groups'
+    @user.groups.each do |group|
+      assert_select 'a[href=?]', group_path(group), text: group.name
+      if (group.description.length <= 140)
+        assert_match group.description, response.body
+      else
+        assert_match group.description[0..139] + "...", response.body
+      end
+    end
+  end
+
   test "user's events display" do
-    log_in_as(@user)
     get events_user_path(@user)
     assert_template 'users/events'
     @user.events.each do |event|
