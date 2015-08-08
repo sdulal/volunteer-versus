@@ -86,4 +86,15 @@ class AttendanceTest < ActiveSupport::TestCase
     assert_equal 0.5, @attendee.membership_for(@group).hours
   end
 
+  test "leaving after attendance is checked should uncredit" do
+    @attendee = @attendance.attendee
+    @group = @attendance.group
+    @attendance.update_attributes(checked: true)
+    assert_equal @attendance.hours, @attendee.hours
+    assert_equal @attendance.hours, @group.hours
+    @attendee.leave(@attendance.event)
+    assert_equal 0, @attendee.reload.hours
+    assert_equal 0, @group.reload.hours
+  end
+
 end
