@@ -18,6 +18,11 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
         assert_select 'a[href=?]', user_path(user), text: 'delete'
       end
     end
+    assert_difference 'User.count', -1 do
+      delete user_path(@non_admin)
+    end
+    assert_not flash.empty?
+    assert_redirected_to users_path
   end
 
   test "index as non-admin" do
