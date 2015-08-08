@@ -54,4 +54,13 @@ class EventsEditTest < ActionDispatch::IntegrationTest
     assert_match new_location, response.body
     assert_match new_desc, response.body
   end
+
+  test "event deletion" do
+    get edit_event_path(@event)
+    assert_select 'a[href=?]', event_path(@event), "Delete event"
+    assert_difference '@group.events.count', -1 do
+      delete event_path(@event)
+    end
+    assert_redirected_to group_events_path(@event.group)
+  end
 end
