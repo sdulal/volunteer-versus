@@ -81,7 +81,7 @@ class User < ActiveRecord::Base
 
   # Quits a group.
   def quit(group)
-    memberships.find_by(group: group).destroy
+    memberships.find_by(group: group).destroy!
   end
 
   # Attends an event.
@@ -91,7 +91,7 @@ class User < ActiveRecord::Base
 
   # Leave an event.
   def leave(event)
-    attendances.find_by(event: event).destroy
+    attendances.find_by(event: event).destroy!
   end
 
   # Returns true if the user is the admin of some group.
