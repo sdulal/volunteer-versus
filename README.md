@@ -9,7 +9,7 @@ This application uses the Ruby on Rails framework (4.2.0).
 ## Installation
 
 Install the Rails. Information on how to install Rails can be found [here.](http://rubyonrails.org/download/)
-Make sure that you have sqlite3 installed. This can be accomplished with [precompiled binaries.](http://www.sqlite.org/download.html) Mac users can use Homebrew to install using ``brew install sqlite``.
+Make sure that you have sqlite3 installed. This can be accomplished with [precompiled binaries.](http://www.sqlite.org/download.html) Mac users can use [Homebrew](http://brew.sh) to install using ``brew install sqlite``.
 
 Clone this repository and go into the folder:
 
