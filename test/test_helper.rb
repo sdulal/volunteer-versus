@@ -9,7 +9,8 @@ Minitest::Reporters.use!
 
 class ActiveSupport::TestCase
   include ActionView::Helpers::NumberHelper
-  # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
+  # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical
+  # order.
   fixtures :all
 
   # Returns true if a test user is logged in.
@@ -52,7 +53,8 @@ class ActiveSupport::TestCase
     group.events.first
   end
 
-  # Getting the formatted version that views of the application use for decimal numbers.
+  # Getting the formatted version that views of the application use for decimal
+  # numbers.
   def formatted_number(number)
     number_with_precision(number, precision: 2, strip_insignificant_zeros: true)
   end
