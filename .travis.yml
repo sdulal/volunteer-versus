@@ -3,5 +3,3 @@ rvm:
   - 2.2.2
 env:
   - DB=sqlite
-script:
-  - RAILS_ENV=test bundle exec rake --trace db:migrate test
