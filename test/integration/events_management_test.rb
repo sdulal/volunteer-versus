@@ -33,9 +33,15 @@ class EventsEditTest < ActionDispatch::IntegrationTest
     get edit_event_path(@event)
     assert_template 'events/edit'
     new_name = "X"
-    new_date = Date.today
-    new_start = Time.now
-    new_end = Time.now + 1.hour
+    if late_night?
+      new_date = Date.tomorrow
+      new_start = Time.new.change(hour: 1)
+      new_end = Time.new.change(hour: 2)
+    else
+      new_date = Date.today
+      new_start = Time.now
+      new_end = Time.now + 1.hour
+    end
     new_location = "Here"
     new_desc = "Stuff"
     patch_via_redirect event_path(@event), event: { name: new_name,

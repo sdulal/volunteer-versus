@@ -57,9 +57,18 @@ class EventTest < ActiveSupport::TestCase
       user.attend(@event)
       user.attendance_for(@event).update_attributes(checked: true)
     end
-    @event.update_attributes(date: Date.today,
-                              start_time: Time.now,
-                              end_time: Time.now + 1.hour)
+    if late_night?
+      new_date = Date.tomorrow
+      new_start = Time.new.change(hour: 1)
+      new_end = Time.new.change(hour: 2)
+    else
+      new_date = Date.today
+      new_start = Time.now
+      new_end = Time.now + 1.hour
+    end
+    @event.update_attributes(date: new_date,
+                              start_time: new_start,
+                              end_time: new_end)
     @event.attendances.each do |attendance|
       assert_equal 0, attendance.attendee.hours.round(2)
       assert_not attendance.checked

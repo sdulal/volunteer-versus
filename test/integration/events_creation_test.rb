@@ -24,11 +24,20 @@ class EventManagementTest < ActionDispatch::IntegrationTest
 
   test "valid event creation" do
     get new_group_event_path(@group)
+    if late_night?
+      new_date = Date.tomorrow
+      new_start = Time.new.change(hour: 1)
+      new_end = Time.new.change(hour: 2)
+    else
+      new_date = Date.today
+      new_start = Time.now
+      new_end = Time.now + 1.hour
+    end
     assert_difference '@group.events.count', 1 do
       post group_events_path(@group), event: { name: "X",
-                                                date: Date.today,
-                                                start_time: Time.now,
-                                                end_time: Time.now + 1.hour,
+                                                date: new_date,
+                                                start_time: new_start,
+                                                end_time: new_end,
                                                 location: "Here",
                                                 description: "Stuff" }
     end

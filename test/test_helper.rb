@@ -75,6 +75,11 @@ class ActiveSupport::TestCase
     group.promote_to_admin(user) unless group.has_admin?(user)
   end
 
+  # Used to deal with the late-night time issue in some tests.
+  def late_night?
+    Time.now.hour >= 23
+  end
+
   private
 
     # Returns true inside an integration test.
