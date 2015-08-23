@@ -7,7 +7,7 @@
       <h3><%= link_to_if event.group.has_member?(current_user), event.name, event %></h3>
       <ul class="event-info">
         <li><%= "Organized by " + event.group.name %></li>
-        <li><%= event.date.strftime("%B %d, %Y") %></li>
+        <li><%= formatted_day(event.date) %></li>
       </ul>
       <p class="user-event-desc"><%= short_desc(event) %></p>
       </dl>

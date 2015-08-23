@@ -1,10 +1,10 @@
 <%= link_to event.name, event_path(event) %>
 <br>
-<%= event.date.to_formatted_s(:long) %>
+<%= formatted_day(event.date) %>
 <br>
-<%= event.start_time.to_formatted_s(:time) %>
+<%= formatted_time(event.start_time) %>
 <br>
-<%= event.start_time.strftime("%l %p") %>
+<%= formatted_time(event.end_time) %>
 <br>
 <%= event.location %>
 <br>

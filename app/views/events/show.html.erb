@@ -6,15 +6,15 @@
     <h2>Info</h2>
     <dl class="dl-horizontal">
       <dt>Date</dt>
-      <dd><%= @event.date.strftime("%B %d, %Y") %></dd>
+      <dd><%= formatted_day(@event.date) %></dd>
     </dl>
     <dl class="dl-horizontal">
       <dt>Starts at</dt>
-      <dd><%= @event.start_time.strftime("%l:%M %p") %></dd>
+      <dd><%= formatted_time(@event.start_time) %></dd>
     </dl>
     <dl class="dl-horizontal">
       <dt>Ends at </dt>
-      <dd><%= @event.end_time.strftime("%l:%M %p") %></dd>
+      <dd><%= formatted_time(@event.end_time) %></dd>
     </dl>
     <dl class="dl-horizontal">
       <dt>Location</dt>

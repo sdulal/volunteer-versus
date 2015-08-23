@@ -18,9 +18,9 @@
         <% @group.events.each do |event| %>
           <tr>
             <td><%= link_to event.name, event %></td>
-            <td><%= event.date.strftime("%B %d, %Y") %></td>
-            <td><%= event.start_time.strftime("%l:%M %p") %></td>
-            <td><%= event.end_time.strftime("%l:%M %p") %></td>
+            <td><%= formatted_day(event.date) %></td>
+            <td><%= formatted_time(event.start_time) %></td>
+            <td><%= formatted_time(event.end_time) %></td>
             <td><%= event.location %></td>
           </tr>
         <% end %>

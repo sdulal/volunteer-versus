@@ -7,7 +7,7 @@
         <%= @user.name %>
       </h1>
       <h6>
-        Joined on <%= @user.created_at.strftime("%B %d, %Y") %>
+        Joined on <%= formatted_day(@user.created_at) %>
       </h6>
     </section>
     <section class="stats">
@@ -31,7 +31,7 @@
         <div id="hours" class="stat">
           <a href="#">
             <strong>
-              <%= number_with_precision(@user.hours, precision: 2, strip_insignificant_zeros: true) %>
+              <%= formatted_number(@user.hours) %>
             </strong>
             <%= 'hour'.pluralize(@user.reload.hours) %>
           </a>
@@ -58,7 +58,7 @@
               <tr>
                 <td><%= event.name %></td>
                 <td><%= event.group.name %></td>
-                <td><%= event.date.strftime("%B %d, %Y") %></td>
+                <td><%= formatted_day(event.date) %></td>
               </tr>
             <% end %>
           </tbody>

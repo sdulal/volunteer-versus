@@ -28,7 +28,7 @@
                                   data: { confirm: "You sure?" } %>
                 <% end %>
               </td>
-              <td><%= number_with_precision(user.hours, precision: 2, strip_insignificant_zeros: true) %></td>
+              <td><%= formatted_number(user.hours) %></td>
               <td><%= user.groups.count %></td>
             </tr>
           <% end %>
