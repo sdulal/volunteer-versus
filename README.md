@@ -1,4 +1,4 @@
-Volunteer Versus [![Build Status](https://travis-ci.org/sdulal/volunteer-versus.svg)](https://travis-ci.org/sdulal/volunteer-versus)
+Volunteer Versus
 ================
 
 Volunteer Versus is an online application that allows volunteering organizations to better manage hours. Club officers simply check off members for events so that members can get hours credited. Through a leaderboard system, users and groups are able to see exactly who volunteers the most, which club has the most members, etc.
