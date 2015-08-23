@@ -1,4 +1,4 @@
-<% hours = number_to_human(current_user.hours, precision: 2, strip_insignificant_zeros: true) %>
+<% hours = formatted_number(current_user.hours) %>
 <% provide(:title, "Home") %>
 <h1>Welcome, <%= current_user.name %>!</h1>
 <h6 id="sub-welcome">You have volunteered for <%= pluralize(hours, 'hour') %>!</h6>
@@ -18,7 +18,7 @@
           <tr>
             <td><%= link_to event.name, event %></td>
             <td><%= event.group.name %></td>
-            <td><%= event.date.strftime("%B %d, %Y") %></td>
+            <td><%= formatted_day(event.date) %></td>
           </tr>
         <% end %>
       </tbody>
@@ -40,7 +40,7 @@
           <tr>
             <td><%= link_to event.name, event %></td>
             <td><%= event.group.name %></td>
-            <td><%= event.date.strftime("%B %d, %Y") %></td>
+            <td><%= formatted_day(event.date) %></td>
           </tr>
         <% end %>
       </tbody>
