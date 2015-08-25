@@ -6,7 +6,7 @@
         <%= @group.name %>
       </h1>
       <h6>
-        On Volunter Versus since <%= @group.created_at.strftime("%B %d, %Y") %>
+        On Volunter Versus since <%= formatted_day(@group.created_at) %>
       </h6>
       <p><%= @group.description %></p>
     </section>
@@ -31,14 +31,14 @@
         <div id="hours" class="stat">
           <a href="#">
             <strong>
-              <%= number_with_precision(@group.hours, precision: 2, strip_insignificant_zeros: true) %>
+              <%= formatted_number(@group.hours) %>
             </strong>
             <%= 'hour'.pluralize(@group.reload.hours) %>
           </a>
         </div>
       </div>
       <% if @group.has_member?(current_user) %>
-        <p id="current-member-hours">You have volunteered <%= number_with_precision(@your_hours, precision: 2, strip_insignificant_zeros: true) %> hours here!</p>
+        <p id="current-member-hours">You have volunteered <%= formatted_number(@your_hours) %> hours here!</p>
       <% end %>
     </section>
   </div>
@@ -53,8 +53,8 @@
           <% @group.events.first(5).each do |event| %>
             <tr>
               <td><%= link_to event.name, event %></td>
-              <td><%= event.date.strftime("%B %d, %Y") %></td>
-              <td><%= event.start_time.strftime("%l:%M %p") %></td>
+              <td><%= formatted_day(event.date) %></td>
+              <td><%= formatted_time(event.start_time) %></td>
             </tr>
           <% end %>
         </tbody>

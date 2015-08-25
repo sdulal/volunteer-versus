@@ -21,7 +21,7 @@
             <tr>
               <td><%= @incrementer + index %></td>
               <td><%= link_to group.name, group %></td>
-              <td><%= number_with_precision(group.hours, precision: 2, strip_insignificant_zeros: true) %></td>
+              <td><%= formatted_number(group.hours) %></td>
               <td><%= group.events.count %></td>
               <td><%= group.users.count %></td>
             </tr>

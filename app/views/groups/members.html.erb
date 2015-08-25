@@ -14,10 +14,10 @@
             <%= link_to member.name, member %>
           </div>
           <div class="member-hours">
-            <%= number_with_precision(member.hours_for_group(@group), precision: 2, strip_insignificant_zeros: true) %> hours
+            <%= formatted_number(member.hours_for_group(@group)) %> hours
           </div>
           <div class="member-time">
-            Member since <%= member.membership_for(@group).created_at.strftime("%B %d, %Y") %>
+            Member since <%= formatted_day(member.membership_for(@group).created_at) %>
           </div>
         </div>
 
