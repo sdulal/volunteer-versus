@@ -1,5 +1,6 @@
 class AccountActivationsController < ApplicationController
 
+  # Try to active account after user clicks link from email.
   def edit
     user = User.find_by(email: params[:email])
     if user && !user.activated? && user.authenticated?(:activation, params[:id])
