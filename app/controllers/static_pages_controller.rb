@@ -1,6 +1,7 @@
 class StaticPagesController < ApplicationController
+
+  # Show user's stats, upcoming events and groups if logged in.
   def home
-    # Show user's stats, upcoming events and groups if logged in.
     if logged_in?
       @upcoming_events = current_user.events
                 .where(['date >= ?', Date.today]).paginate(page: params[:page])
@@ -12,9 +13,11 @@ class StaticPagesController < ApplicationController
     end
   end
 
+  # About page.
   def about
   end
 
+  # Contact page.
   def contact
   end
 end
