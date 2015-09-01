@@ -3,6 +3,7 @@ class MembershipsController < ApplicationController
   before_action :admin_user, only: :update
   before_action :prevent_zero_group_admins, only: :destroy
 
+  # Joining a group.
   def create
     @group = Group.find(params[:group_id])
     current_user.join(@group)
@@ -10,6 +11,7 @@ class MembershipsController < ApplicationController
     redirect_to @group
   end
 
+  # Updating a membership (for things like admin status).
   def update
     @membership = Membership.find(params[:id])
     if @membership.update_attributes(membership_params)
@@ -18,6 +20,7 @@ class MembershipsController < ApplicationController
     end
   end
 
+  # Deleting a membership (through admin or by quitting).
   def destroy
     @membership = Membership.find(params[:id])
     @membership.destroy
@@ -32,6 +35,7 @@ class MembershipsController < ApplicationController
 
   private
 
+    # Limit what parameters can be changed through forms.
     def membership_params
       params.require(:membership).permit(:admin)
     end
