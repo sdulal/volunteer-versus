@@ -3,9 +3,11 @@ class PasswordResetsController < ApplicationController
   before_action :valid_user,       only: [:edit, :update]
   before_action :check_expiration, only: [:edit, :update]
 
+  # Requesting a new password reset.
   def new
   end
 
+  # Set up a password reset key and email for the user.
   def create
     @user = User.find_by(email: params[:password_reset][:email].downcase)
     if @user
@@ -19,9 +21,11 @@ class PasswordResetsController < ApplicationController
     end
   end
 
+  # Editing for the user's new password.
   def edit
   end
 
+  # Updating the user's password.
   def update
     if params[:user][:password].empty?
       flash.now[:danger] = "Password can't be empty"
@@ -37,12 +41,12 @@ class PasswordResetsController < ApplicationController
 
   private
 
+    # Limit what parameters can be changed through forms.
     def user_params
       params.require(:user).permit(:password, :password_confirmation)
     end
 
-    # Before filters
-
+    # Get the user corresponding to an email.
     def get_user
       @user = User.find_by(email: params[:email])
     end
