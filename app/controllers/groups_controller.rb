@@ -3,10 +3,12 @@ class GroupsController < ApplicationController
   before_action :member_user, except: [:index, :new, :create, :show]
   before_action :admin_user, only: [:edit, :update, :destroy]
 
+  # Set up for the new group form.
   def new
     @group = Group.new
   end
 
+  # Create a new group.
   def create
     @group = Group.new(group_params)
     if @group.save
@@ -19,6 +21,7 @@ class GroupsController < ApplicationController
     end
   end
 
+  # Update details on a group.
   def update
     @group = Group.find(by_id)
     if @group.update_attributes(group_params)
@@ -29,16 +32,19 @@ class GroupsController < ApplicationController
     end
   end
 
+  # Editing a group.
   def edit
     @group = Group.find(by_id)
   end
 
+  # Deleting a group.
   def destroy
     Group.find(by_id).destroy
     flash[:success] = "Group deleted"
     redirect_to groups_url
   end
 
+  # Listing all the groups, in order of hours.
   def index
     @groups = Group.order(hours: :desc).paginate(page: params[:page])
     @incrementer = 30 * (params[:page].to_i - 1) + 1
@@ -47,6 +53,7 @@ class GroupsController < ApplicationController
     end
   end
 
+  # Viewing a particular group. Display depends on membership.
   def show
     @group = Group.find(by_id)
     if @group.has_member?(current_user)
@@ -54,6 +61,7 @@ class GroupsController < ApplicationController
     end
   end
 
+  # View all the members in a certain group.
   def members
     @group = Group.find(params[:group_id])
     @members = @group.users
@@ -61,10 +69,12 @@ class GroupsController < ApplicationController
 
   private
 
+    # Limit what parameters can be changed through forms.
     def group_params
       params.require(:group).permit(:name, :description)
     end
 
+    # Certain pages should be accessed only by members.
     def member_user
       if params[:group_id]
         @group = Group.find(params[:group_id])
@@ -77,6 +87,7 @@ class GroupsController < ApplicationController
       end
     end
 
+    # Certain pages should be accessed only by group admins.
     def admin_user
       @group = Group.find(by_id)
       redirect_to @group unless @group.has_admin?(current_user)
