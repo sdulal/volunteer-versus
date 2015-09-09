@@ -50,7 +50,7 @@ Measures of code coverage, given by the `simplecov` gem (installed already due t
 
 ## Making a contribution
 
-There's always something that can be done to help improve the app! Feel free to report an issue if something's up.
+There's always something that can be done to help improve the app! Feel free to report an issue if something's up. No problem in doing a pull request, either.
 
 ## License
 
